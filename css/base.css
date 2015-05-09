@@ -11,3 +11,8 @@ body {
 #map-canvas { 
 	height: 100% 
 }
+
+#user-controls {
+	height: 50px;
+	width: 100%
+}

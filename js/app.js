@@ -1,14 +1,13 @@
 var neighborhoodApp = neighborhoodApp || {};
 
-neighborhoodApp.mapView = {
+neighborhoodApp.view = {
 	init: function(){
 		var mapOptions = {
-			center: { lat: -34.397, lng: 150.644},
-			zoom: 8
+			center: { lat: 33.679046, lng: -117.833076},
+			zoom: 12
 		};
 	    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-		google.maps.event.addDomListener(window, 'load', initialize);
 	}
 };
 
-neighborhoodApp.mapView.init();
+neighborhoodApp.view.init();

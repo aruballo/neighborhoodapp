@@ -16,3 +16,7 @@ body {
 	height: 50px;
 	width: 100%
 }
+
+select {
+	width: 150px;
+}

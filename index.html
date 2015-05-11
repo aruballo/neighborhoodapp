@@ -11,10 +11,10 @@
 			<input type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">Search bar</input>
 		</div>
 		<div id="dropdowns" data-bind="visible: dropdownsVisible">
-			<select></select>
-			<select></select>
-			<select></select>
-			<button type="button">Search</button>
+			<select id="CategoryFilterList"></select>
+			<select id="SubcategoryFilterList"></select>
+			<select id="RadiusFilterList"></select>
+			<button type="button" data-bind="click: loadMarkers">Search</button>
 		</div>
 		<div id="searchbar" data-bind="visible: searchbarVisible">
 			<input></input>
@@ -23,5 +23,6 @@
 	</body>
 	<script src="https://maps.googleapis.com/maps/api/js"></script>
 	<script src="js/knockout.js"></script>
+	<script src="js/ajax.js"></script>
 	<script src="js/app.js"></script>
 </html>

@@ -1,7 +1,12 @@
 var neighborhoodApp = neighborhoodApp || {};
 
 neighborhoodApp.model = {
-	
+	init: function(){
+		
+	}
+	loadData: function(){
+		
+	}
 	
 };
 
@@ -25,9 +30,7 @@ neighborhoodApp.viewModel = {
 		//in this case its the checking of the radio button. Returning true allows the
 		//default action to occur
 		return true;	
-	}
-	
-	
+	}	
 };
 
 neighborhoodApp.mapView = {

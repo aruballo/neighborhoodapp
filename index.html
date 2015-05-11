@@ -6,18 +6,18 @@
 	</head>
 	<body>
 		<div>
-			<input type="radio" name="searchView">Dropdowns</input>
+			<input type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView">Dropdowns</input>
 			<br>
-			<input type="radio" name="searchView">Search bar</input>
+			<input type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">Search bar</input>
 		</div>
-		<div id="dropdown-search">
+		<div id="dropdowns" data-bind="visible: dropdownsVisible">
 			<select></select>
 			<select></select>
 			<select></select>
 			<button type="button">Search</button>
 		</div>
-		<div id="searchbar-search">
-			
+		<div id="searchbar" data-bind="visible: searchbarVisible">
+			<input></input>
 		</div>
 		<div id="map-canvas" style="width: 100%; height: 100%"></div>
 	</body>

@@ -10,7 +10,7 @@ neighborhoodApp.viewModel = {
 		this.inputView = ko.observable("dropdowns");
 		this.dropdownsVisible = ko.observable(true);
 		this.searchbarVisible = ko.observable(false);
-		neighborhoodApp.view.init();
+		neighborhoodApp.mapView.init();
 	},
 	toggleInputView: function(){
 		if(this.inputView() == "dropdowns"){
@@ -30,7 +30,7 @@ neighborhoodApp.viewModel = {
 	
 };
 
-neighborhoodApp.view = {
+neighborhoodApp.mapView = {
 	init: function(){
 		this.mapOptions = {
 			center: { lat: 33.679046, lng: -117.833076},

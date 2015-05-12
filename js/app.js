@@ -1,9 +1,10 @@
 var neighborhoodApp = neighborhoodApp || {};
 
-neighborhoodApp.model = {
-	init: function(){
-		var self = this;
-		this.fullCategoriesData;
+neighborhoodApp.model = function(){
+	var self = this;
+	
+	this.init = function(callback){
+		self.fullCategoriesData;
 		
 		var request = neighborhoodApp.getxmlhttpObject();
 		request.open("GET", "js/yelpCategories.json", true);
@@ -13,41 +14,53 @@ neighborhoodApp.model = {
 				if(request.responseText){
 					self.fullCategoriesData = JSON.parse(request.responseText);
 					self.loadParentandSubCategories();
+					callback();
 				}
 			}			
 		};	
 
-	},
-	loadParentandSubCategories: function(){
-		this.parentCategories = [];
-		this.subCategories = [];
+	};
+	
+	this.loadParentandSubCategories = function(){
+		self.parentCategories = [];
+		self.subCategories = [];
 		
-		for(var i = 0; i < this.fullCategoriesData.length; i++){
-			var currentObject = this.fullCategoriesData[i];
-			if(currentObject.parents[0] === "null"){
-				this.parentCategories.push(currentObject);
+		for(var i = 0; i < self.fullCategoriesData.length; i++){
+			var currentObject = self.fullCategoriesData[i];
+			if(currentObject.parents[0] === null){
+				self.parentCategories.push(currentObject);
 			}
 			else{
-				this.subCategories.push(currentObject);
+				self.subCategories.push(currentObject);
 			}
 		}
-	},
+	};
 };
 
-neighborhoodApp.viewModel = {
-	init: function(){
-		var self = this;
-		
+neighborhoodApp.viewModel = function(){
+	var self = this;
+	
+	this.init = function(){
 		this.inputView = ko.observable("dropdowns");
 		this.dropdownsVisible = ko.observable(true);
 		this.searchbarVisible = ko.observable(false);
 		this.categories;
+		this.model = new neighborhoodApp.model();
 		
 		neighborhoodApp.mapView.init();
-		neighborhoodApp.model.init();
+		async.series([
+			self.model.init,
+			function(callback){
+				self.loadCategories();
+				callback();
+			}
+		], function(){
+			ko.applyBindings(self);
+		}); 
 			
-	},
-	toggleInputView: function(){
+	};
+	
+	this.toggleInputView = function(){
 		if(this.inputView() == "dropdowns"){
 			this.dropdownsVisible(true);
 			this.searchbarVisible(false);
@@ -60,12 +73,14 @@ neighborhoodApp.viewModel = {
 		//in this case its the checking of the radio button. Returning true allows the
 		//default action to occur
 		return true;	
-	},
-	loadMarkers: function(){
+	};
+	
+	this.loadMarkers = function(){
 		
-	},
-	loadCategories: function(){
-		this.categories = ko.observableArray(neighborhoodApp.model.parentCategories);
+	};
+	
+	this.loadCategories = function(){
+		this.categories = ko.observableArray(self.model.parentCategories);
 	}
 };
 
@@ -79,5 +94,5 @@ neighborhoodApp.mapView = {
 	}
 };
 
-neighborhoodApp.viewModel.init();
-ko.applyBindings(neighborhoodApp.viewModel);
+neighborhoodApp.currentViewModel = new neighborhoodApp.viewModel();
+neighborhoodApp.currentViewModel.init();

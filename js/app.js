@@ -3,9 +3,12 @@ var neighborhoodApp = neighborhoodApp || {};
 neighborhoodApp.model = function(){
 	var self = this;
 	
+	//Init takes in a callback function which will be called when 
+	//the ajax request is completed. This callback will be passed from
+	//an async.series call. 
 	this.init = function(callback){
 		self.fullCategoriesData;
-		
+	
 		var request = neighborhoodApp.getxmlhttpObject();
 		request.open("GET", "js/yelpCategories.json", true);
 		request.send(null);
@@ -48,6 +51,7 @@ neighborhoodApp.viewModel = function(){
 		this.model = new neighborhoodApp.model();
 		
 		neighborhoodApp.mapView.init();
+		
 		async.series([
 			self.model.init,
 			function(callback){

@@ -11,7 +11,7 @@
 			<input type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">Search bar</input>
 		</div>
 		<div id="dropdowns" data-bind="visible: dropdownsVisible">
-			<select id="CategoryFilterList" data-bind="options: categories, optionsText: 'alias', value: 'title'"></select>
+			<select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: 'alias'"></select>
 			<select id="SubcategoryFilterList"></select>
 			<select id="RadiusFilterList"></select>
 			<button type="button" data-bind="click: loadMarkers">Search</button>

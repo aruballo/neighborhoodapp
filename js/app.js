@@ -38,6 +38,17 @@ neighborhoodApp.model = function(){
 			}
 		}
 	};
+	
+	this.filterSubCategoriesByParent = function(parent){
+		self.filteredSubCategories = [];
+		
+		for(var i = 0; i < self.subCategories.length; i++){
+			var currentObject = self.subCategories[i];
+			if(currentObject.parents[0] === parent){
+				self.filteredSubCategories.push(currentObject);
+			}
+		}
+	};
 };
 
 neighborhoodApp.viewModel = function(){
@@ -47,7 +58,15 @@ neighborhoodApp.viewModel = function(){
 		this.inputView = ko.observable("dropdowns");
 		this.dropdownsVisible = ko.observable(true);
 		this.searchbarVisible = ko.observable(false);
-		this.categories;
+		this.categories = ko.observableArray([]);
+		this.subCategories = ko.observableArray([]);
+		this.selectedCategory = ko.observable('');
+		this.selectedSubcategory = ko.observable('');
+		this.selectedCategory.subscribe( 
+			function(value){
+				self.loadSubCategories(value);
+			}
+		);
 		this.model = new neighborhoodApp.model();
 		
 		neighborhoodApp.mapView.init();
@@ -84,8 +103,13 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.loadCategories = function(){
-		this.categories = ko.observableArray(self.model.parentCategories);
-	}
+		self.categories(self.model.parentCategories);
+	};
+	
+	this.loadSubCategories = function(categoryObject){
+		self.model.filterSubCategoriesByParent(categoryObject.alias);
+		self.subCategories(self.model.filteredSubCategories);
+	};
 };
 
 neighborhoodApp.mapView = {

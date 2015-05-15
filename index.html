@@ -13,7 +13,7 @@
 		<div id="dropdowns" data-bind="visible: dropdownsVisible">
 			<select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: selectedCategory"></select>
 			<select id="SubcategoryFilterList" data-bind="options: subCategories, optionsText: 'title', value: selectedSubcategory"></select>
-			<select id="RadiusFilterList"></select>
+			<select id="RadiusFilterList" data-bind="options: radiusList, value: selectedRadius"></select>
 			<button type="button" data-bind="click: loadMarkers">Search</button>
 		</div>
 		<div id="searchbar" data-bind="visible: searchbarVisible">

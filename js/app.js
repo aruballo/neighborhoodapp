@@ -8,7 +8,8 @@ neighborhoodApp.model = function(){
 	//an async.series call. 
 	this.init = function(callback){
 		self.fullCategoriesData;
-	
+		self.yelpResults;
+		
 		var request = neighborhoodApp.getxmlhttpObject();
 		request.open("GET", "js/yelpCategories.json", true);
 		request.send(null);
@@ -49,25 +50,55 @@ neighborhoodApp.model = function(){
 			}
 		}
 	};
+	
+	this.loadYelpResults = function(query){
+		
+		/*var request = neighborhoodApp.getxmlhttpObject();
+		request.open("GET", "http://api.yelp.com/v2/search?" + query, true);
+		request.send(null);
+		request.onreadystatechange = function() {
+			if ( request.readyState === 4 && request.status === 200) {
+				if(request.responseText){
+					self.yelpResults = JSON.parse(request.responseText);
+					callback();
+				}
+			}			
+		};*/
+		
+		var script = document.createElement('script');
+		script.src = 'http://api.yelp.com/v2/search?' + query +'&callback=neighborhoodApp.currentViewModel.model.saveYelpResults';
+		document.body.appendChild(script);
+		//script.parentNode.removeChild(script);
+	};
+	
+	this.saveYelpResults = function(data){
+		self.yelpResults = JSON.parse(data);
+		console.log(self.yelpResults);
+	};
 };
 
 neighborhoodApp.viewModel = function(){
 	var self = this;
 	
 	this.init = function(){
-		this.inputView = ko.observable("dropdowns");
-		this.dropdownsVisible = ko.observable(true);
-		this.searchbarVisible = ko.observable(false);
-		this.categories = ko.observableArray([]);
-		this.subCategories = ko.observableArray([]);
-		this.selectedCategory = ko.observable('');
-		this.selectedSubcategory = ko.observable('');
-		this.selectedCategory.subscribe( 
+		
+		self.inputView = ko.observable("dropdowns");
+		self.dropdownsVisible = ko.observable(true);
+		self.searchbarVisible = ko.observable(false);
+		self.categories = ko.observableArray([]);
+		self.subCategories = ko.observableArray([]);
+		self.radiusList = ko.observableArray([5, 10, 20, 25])
+		self.selectedRadius = ko.observable('');
+		self.selectedCategory = ko.observable('');
+		self.selectedSubcategory = ko.observable('');
+		
+		self.selectedCategory.subscribe( 
 			function(value){
 				self.loadSubCategories(value);
 			}
 		);
-		this.model = new neighborhoodApp.model();
+		
+		self.model = new neighborhoodApp.model();
 		
 		neighborhoodApp.mapView.init();
 		
@@ -84,13 +115,13 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.toggleInputView = function(){
-		if(this.inputView() == "dropdowns"){
-			this.dropdownsVisible(true);
-			this.searchbarVisible(false);
+		if(self.inputView() == "dropdowns"){
+			self.dropdownsVisible(true);
+			self.searchbarVisible(false);
 		}
 		else{
-			this.dropdownsVisible(false);
-			this.searchbarVisible(true);
+			self.dropdownsVisible(false);
+			self.searchbarVisible(true);
 		}
 		//By default, knockout will prevent the default action for the click event;
 		//in this case its the checking of the radio button. Returning true allows the
@@ -99,7 +130,8 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.loadMarkers = function(){
-		
+		var query = "category_filter=" + self.selectedCategory().alias;
+		self.model.loadYelpResults(query);
 	};
 	
 	this.loadCategories = function(){

@@ -67,7 +67,8 @@ neighborhoodApp.model = function(){
 		
 		var script = document.createElement('script');
 		script.src = 'http://api.yelp.com/v2/search?' + query +'&callback=neighborhoodApp.currentViewModel.model.saveYelpResults'
-			+ "&oauth_consumer_key=zsEyc2ob02LLz9ikcHa2mg" + "&oauth_token=stFKJANc3Zm0-eiZjts5fd-N3o3lurlk";
+			+ "&oauth_consumer_key=zsEyc2ob02LLz9ikcHa2mg" + "&SaDgd7ammC57wzZfr2MXFeBEFWq5rIRv" 
+			+ "&oauth_signature_method=hmac-sha1";
 		document.body.appendChild(script);
 		//script.parentNode.removeChild(script);
 	};

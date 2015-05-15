@@ -66,7 +66,8 @@ neighborhoodApp.model = function(){
 		};*/
 		
 		var script = document.createElement('script');
-		script.src = 'http://api.yelp.com/v2/search?' + query +'&callback=neighborhoodApp.currentViewModel.model.saveYelpResults';
+		script.src = 'http://api.yelp.com/v2/search?' + query +'&callback=neighborhoodApp.currentViewModel.model.saveYelpResults'
+			+ "&oauth_consumer_key=zsEyc2ob02LLz9ikcHa2mg";
 		document.body.appendChild(script);
 		//script.parentNode.removeChild(script);
 	};

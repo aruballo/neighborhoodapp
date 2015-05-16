@@ -1,5 +1,73 @@
 var neighborhoodApp = neighborhoodApp || {};
 
+neighborhoodApp.helpers = {
+	
+	getQueryStringParameters: function(searchType, searchValue, location, radius, callback){
+		// Credit to Peter Chon for the client side OAuth code
+		// His source is here:
+		// http://peterchon.github.io/nanodegree-neighborhood-map-project/
+
+		var auth = {
+			    consumerKey : "zsEyc2ob02LLz9ikcHa2mg",
+			    consumerSecret : "NUCrcURCNp0rEmeTxrLzyv4QtLI",
+			    accessToken : "SaDgd7ammC57wzZfr2MXFeBEFWq5rIRv",
+			    accessTokenSecret : "OShl-Sj67dhdQXsJble_kMmchWM",
+			    serviceProvider : {
+			        signatureMethod : "hmac-sha1"
+			    }
+		};
+	
+	
+		var accessor = {
+			consumerSecret : auth.consumerSecret,
+			tokenSecret : auth.accessTokenSecret
+		};
+		
+		var parameters = [];
+		if(searchType == "dropdowns"){
+			parameters.push(["category_filter", searchValue[0] + (searchValue[1] ? "," + searchValue[1] : "") ]);
+		}
+		else{
+			parameters.push(["term", searchValue[0]]);
+		}
+		
+		parameters.push(['location', location]);
+		parameters.push(['callback', callback]);
+		parameters.push(['radius_filter', radius]);
+		parameters.push(['oauth_consumer_key', auth.consumerKey]);
+		parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
+		parameters.push(['oauth_token', auth.accessToken]);
+		parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+	
+
+		var message = {
+			'action' : 'http://api.yelp.com/v2/search',
+			'method' : 'GET',
+			'parameters' : parameters
+		};
+	
+
+		OAuth.setTimestampAndNonce(message);
+		OAuth.SignatureMethod.sign(message, accessor);
+
+	
+		var queryParameters = OAuth.getParameterMap(message.parameters);
+		var query = "category_filter=" + queryParameters.category_filter + 
+			"&location=" + queryParameters.location + 
+			"&radius_filter=" + queryParameters.radius_filter +
+		    "&oauth_consumer_key=" + queryParameters.oauth_consumer_key +
+			"&oauth_consumer_secret=" + queryParameters.oauth_consumer_secret +
+			"&oauth_token=" + queryParameters.oauth_token +
+			"&oauth_nonce=" + queryParameters.oauth_nonce +
+			"&oauth_signature=" + queryParameters.oauth_signature +
+			"&oauth_signature_method=" + queryParameters.oauth_signature_method +
+			"&oauth_timestamp=" + queryParameters.oauth_timestamp;
+			
+		return query;
+	}
+	
+};
+
 neighborhoodApp.model = function(){
 	var self = this;
 	
@@ -51,24 +119,11 @@ neighborhoodApp.model = function(){
 		}
 	};
 	
-	this.loadYelpResults = function(query){
+	this.loadYelpResults = function(searchType, searchValue, location, radius, callback){
 		
-		/*var request = neighborhoodApp.getxmlhttpObject();
-		request.open("GET", "http://api.yelp.com/v2/search?" + query, true);
-		request.send(null);
-		request.onreadystatechange = function() {
-			if ( request.readyState === 4 && request.status === 200) {
-				if(request.responseText){
-					self.yelpResults = JSON.parse(request.responseText);
-					callback();
-				}
-			}			
-		};*/
-		
+		var query = neighborhoodApp.helpers.getQueryStringParameters(searchType, searchValue, location, radius, callback);
 		var script = document.createElement('script');
-		script.src = 'http://api.yelp.com/v2/search?' + query +'&callback=neighborhoodApp.currentViewModel.model.saveYelpResults'
-			+ "&oauth_consumer_key=zsEyc2ob02LLz9ikcHa2mg" + "&SaDgd7ammC57wzZfr2MXFeBEFWq5rIRv" 
-			+ "&oauth_signature_method=hmac-sha1";
+		script.src = 'http://api.yelp.com/v2/search?' + query;
 		document.body.appendChild(script);
 		//script.parentNode.removeChild(script);
 	};
@@ -125,15 +180,27 @@ neighborhoodApp.viewModel = function(){
 			self.dropdownsVisible(false);
 			self.searchbarVisible(true);
 		}
+		
 		//By default, knockout will prevent the default action for the click event;
 		//in this case its the checking of the radio button. Returning true allows the
 		//default action to occur
+		
 		return true;	
 	};
 	
 	this.loadMarkers = function(){
-		var query = "category_filter=" + self.selectedCategory().alias;
-		self.model.loadYelpResults(query);
+		var searchType = self.dropdownsVisible() ? "dropdowns" : "searchbar";
+		var searchValues = [];
+		
+		if(searchType === "dropdowns"){
+			searchValues.push(self.selectedCategory().alias);
+			searchValues.push(self.selectedSubcategory().alias);
+		}
+		else{
+			searchValues.push('ice cream');
+		}
+		
+		self.model.loadYelpResults(searchType, searchValues, "92614", self.selectedRadius(), "neighborhoodApp.viewModel.outputyelpdata");
 	};
 	
 	this.loadCategories = function(){
@@ -143,6 +210,10 @@ neighborhoodApp.viewModel = function(){
 	this.loadSubCategories = function(categoryObject){
 		self.model.filterSubCategoriesByParent(categoryObject.alias);
 		self.subCategories(self.model.filteredSubCategories);
+	};
+	
+	this.outputyelpdata = function(data){
+		console.log(data);
 	};
 };
 

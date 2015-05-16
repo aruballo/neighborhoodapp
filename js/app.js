@@ -2,19 +2,22 @@ var neighborhoodApp = neighborhoodApp || {};
 
 neighborhoodApp.helpers = {
 	
+	// Credit to Peter Chon for the client side OAuth code
+	// My following client side implementation was based on his implementation.
+	// His project and implementation can be found here:
+	// http://peterchon.github.io/nanodegree-neighborhood-map-project/
+	
 	getQueryStringParameters: function(searchType, searchValue, location, radius, callback){
-		// Credit to Peter Chon for the client side OAuth code
-		// His source is here:
-		// http://peterchon.github.io/nanodegree-neighborhood-map-project/
-
+		
+		//In a production implementation of a project like this
+		//the secrets would not be exposed. But this is simply for 
+		//proof of concept. 
+		
 		var auth = {
 			    consumerKey : "zsEyc2ob02LLz9ikcHa2mg",
 			    consumerSecret : "NUCrcURCNp0rEmeTxrLzyv4QtLI",
 			    accessToken : "SaDgd7ammC57wzZfr2MXFeBEFWq5rIRv",
-			    accessTokenSecret : "OShl-Sj67dhdQXsJble_kMmchWM",
-			    serviceProvider : {
-			        signatureMethod : "hmac-sha1"
-			    }
+			    accessTokenSecret : "OShl-Sj67dhdQXsJble_kMmchWM"
 		};
 	
 	
@@ -24,13 +27,15 @@ neighborhoodApp.helpers = {
 		};
 		
 		var parameters = [];
+		
+		//If this request was made from the dropdowns menu, grab the category and subcategory
 		if(searchType == "dropdowns"){
 			parameters.push(["category_filter", searchValue[0] + (searchValue[1] ? "," + searchValue[1] : "") ]);
 		}
+		//Else just grab the searchbar value
 		else{
 			parameters.push(["term", searchValue[0]]);
 		}
-		
 		parameters.push(['location', location]);
 		parameters.push(['callback', callback]);
 		parameters.push(['radius_filter', radius]);
@@ -39,18 +44,15 @@ neighborhoodApp.helpers = {
 		parameters.push(['oauth_token', auth.accessToken]);
 		parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
 	
-
 		var message = {
 			'action' : 'http://api.yelp.com/v2/search',
 			'method' : 'GET',
 			'parameters' : parameters
 		};
 	
-
 		OAuth.setTimestampAndNonce(message);
 		OAuth.SignatureMethod.sign(message, accessor);
-
-	
+		
 		var queryParameters = OAuth.getParameterMap(message.parameters);
 		var query = "category_filter=" + queryParameters.category_filter + 
 			"&location=" + queryParameters.location + 
@@ -61,7 +63,8 @@ neighborhoodApp.helpers = {
 			"&oauth_nonce=" + queryParameters.oauth_nonce +
 			"&oauth_signature=" + queryParameters.oauth_signature +
 			"&oauth_signature_method=" + queryParameters.oauth_signature_method +
-			"&oauth_timestamp=" + queryParameters.oauth_timestamp;
+			"&oauth_timestamp=" + queryParameters.oauth_timestamp + 
+			"&callback=" + queryParameters.callback;
 			
 		return query;
 	}
@@ -119,17 +122,17 @@ neighborhoodApp.model = function(){
 		}
 	};
 	
-	this.loadYelpResults = function(searchType, searchValue, location, radius, callback){
+	this.loadYelpResults = function(searchType, searchValue, location, radius){
 		
-		var query = neighborhoodApp.helpers.getQueryStringParameters(searchType, searchValue, location, radius, callback);
+		var query = neighborhoodApp.helpers.getQueryStringParameters(searchType, searchValue, location, radius, "neighborhoodApp.currentViewModel.model.saveYelpResults");
 		var script = document.createElement('script');
 		script.src = 'http://api.yelp.com/v2/search?' + query;
 		document.body.appendChild(script);
-		//script.parentNode.removeChild(script);
+		script.parentNode.removeChild(script);
 	};
 	
 	this.saveYelpResults = function(data){
-		self.yelpResults = JSON.parse(data);
+		self.yelpResults = data;
 		console.log(self.yelpResults);
 	};
 };
@@ -144,7 +147,7 @@ neighborhoodApp.viewModel = function(){
 		self.searchbarVisible = ko.observable(false);
 		self.categories = ko.observableArray([]);
 		self.subCategories = ko.observableArray([]);
-		self.radiusList = ko.observableArray([5, 10, 20, 25])
+		self.radiusList = ko.observableArray([8046, 16093, 24140, 32186])
 		self.selectedRadius = ko.observable('');
 		self.selectedCategory = ko.observable('');
 		self.selectedSubcategory = ko.observable('');
@@ -200,7 +203,7 @@ neighborhoodApp.viewModel = function(){
 			searchValues.push('ice cream');
 		}
 		
-		self.model.loadYelpResults(searchType, searchValues, "92614", self.selectedRadius(), "neighborhoodApp.viewModel.outputyelpdata");
+		self.model.loadYelpResults(searchType, searchValues, "92614", self.selectedRadius());
 	};
 	
 	this.loadCategories = function(){
@@ -210,10 +213,6 @@ neighborhoodApp.viewModel = function(){
 	this.loadSubCategories = function(categoryObject){
 		self.model.filterSubCategoriesByParent(categoryObject.alias);
 		self.subCategories(self.model.filteredSubCategories);
-	};
-	
-	this.outputyelpdata = function(data){
-		console.log(data);
 	};
 };
 

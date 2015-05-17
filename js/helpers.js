@@ -29,7 +29,7 @@ neighborhoodApp.helpers = {
 		
 		//If this request was made from the dropdowns menu, grab the category and subcategory
 		if(searchType == "dropdowns"){
-			parameters.push(["category_filter", searchValue[0] + (searchValue[1] ? "," + searchValue[1] : "") ]);
+			parameters.push(["category_filter", searchValue[0]]);
 		}
 		//Else just grab the searchbar value
 		else{
@@ -59,16 +59,26 @@ neighborhoodApp.helpers = {
 	},
 	
 	ajaxRequest: function(url, data, dataType, callback){
+		
+		//Cache true is needed for jsonp request in order to prevent underscore timestamp parameter
+		//from being added automatically in the jquery request
 		if(dataType == "jsonp"){
 			$.ajax({
 				'url' : url,
 				'data' : data,
-				//needed to prevent jquery timestamp parameter from
-				//being added to request
 				'cache': true,
 				'dataType' : 'jsonp',
 				'global' : true,
 				'jsonpCallback' : 'cb',
+				'success' : function(data){
+					callback(data);
+				}
+			});
+		}
+		else if(dataType == "json"){
+			$.ajax({
+				'url' : url,
+				'dataType': 'json',
 				'success' : function(data){
 					callback(data);
 				}

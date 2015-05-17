@@ -9,19 +9,11 @@ neighborhoodApp.model = function(){
 	this.init = function(callback){
 		self.fullCategoriesData;
 		self.yelpResults;
-		
-		var request = neighborhoodApp.getxmlhttpObject();
-		request.open("GET", "js/yelpCategories.json", true);
-		request.send(null);
-		request.onreadystatechange = function() {
-			if ( request.readyState === 4 && request.status === 200) {
-				if(request.responseText){
-					self.fullCategoriesData = JSON.parse(request.responseText);
-					self.loadParentandSubCategories();
-					callback();
-				}
-			}			
-		};	
+		neighborhoodApp.helpers.ajaxRequest("js/yelpCategories.json", null, "json", function(data){
+			self.fullCategoriesData = data
+			self.loadParentandSubCategories();
+			callback();	
+		});
 
 	};
 	
@@ -54,12 +46,9 @@ neighborhoodApp.model = function(){
 	this.loadYelpResults = function(searchType, searchValue, location, radius, callback){
 		
 		neighborhoodApp.helpers.yelpAjaxRequest(searchType, searchValue, location, radius, 
-			(function(callback){
-				var cb = callback;
-				return function(data){
-					self.saveYelpResults(data, cb);
-				}
-			})(callback)
+			function(data){
+				self.saveYelpResults(data, callback);
+			}
 		);
 	};
 	
@@ -128,7 +117,6 @@ neighborhoodApp.viewModel = function(){
 		var searchValues = [];
 		
 		if(searchType === "dropdowns"){
-			searchValues.push(self.selectedCategory().alias);
 			searchValues.push(self.selectedSubcategory().alias);
 		}
 		else{

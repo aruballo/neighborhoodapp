@@ -17,6 +17,7 @@ neighborhoodApp.model = function(){
 
 	};
 	
+	
 	this.loadParentandSubCategories = function(){
 		self.parentCategories = [];
 		self.subCategories = [];
@@ -144,7 +145,20 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.loadMarkers = function(){
-		console.log(self.model.yelpResults);
+		var markersArray = [];
+		for(var i = 0; i < self.model.yelpResults.total; i++){
+			var currentResult = self.model.yelpResults.businesses[i];
+			var lat = currentResult.location.coordinate.latitude;
+			var lng = currentResult.location.coordinate.longitude;
+			var title = currentResult.name;
+			var resultLatlng = new google.maps.LatLng(lat, lng);
+			var marker = new google.maps.Marker({
+				position: resultLatlng,
+				title: title
+			});
+			markersArray.push(marker);
+			marker.setMap(neighborhoodApp.mapView.map);
+		}
 	};
 };
 

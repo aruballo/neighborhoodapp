@@ -3,51 +3,21 @@ var neighborhoodApp = neighborhoodApp || {};
 neighborhoodApp.helpers = {
 	
 	// Credit to Peter Chon for the client side OAuth code
-	// My following client side implementation was based on his implementation.
+	// My following client side OAuth implementation was based on his implementation.
 	// His project and implementation can be found here:
 	// http://peterchon.github.io/nanodegree-neighborhood-map-project/
 	
-	yelpAjaxRequest: function(searchType, searchValue, location, radius, callback){
-		
-		//In a production implementation of a project like this
-		//the secrets would not be exposed. But this is simply for 
-		//proof of concept. 	
-		var auth = {
-			    consumerKey : "zsEyc2ob02LLz9ikcHa2mg",
-			    consumerSecret : "NUCrcURCNp0rEmeTxrLzyv4QtLI",
-			    accessToken : "SaDgd7ammC57wzZfr2MXFeBEFWq5rIRv",
-			    accessTokenSecret : "OShl-Sj67dhdQXsJble_kMmchWM"
-		};
-	
-	
-		var accessor = {
-			consumerSecret : auth.consumerSecret,
-			tokenSecret : auth.accessTokenSecret
-		};
-		
-		var parameters = [];
-		
-		//If this request was made from the dropdowns menu, grab the category and subcategory
-		if(searchType == "dropdowns"){
-			parameters.push(["category_filter", searchValue[0]]);
-		}
-		//Else just grab the searchbar value
-		else{
-			parameters.push(["term", searchValue[0]]);
-		}
-		
-		parameters.push(['location', location]);
-		parameters.push(['callback', 'cb']);
-		parameters.push(['radius_filter', radius]);
-		parameters.push(['oauth_consumer_key', auth.consumerKey]);
-		parameters.push(['oauth_consumer_secret', auth.consumerSecret]);
-		parameters.push(['oauth_token', auth.accessToken]);
-		parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
-	
+	yelpAjaxRequest: function(api, parameters, callback){
+			
 		var message = {
-			'action' : 'http://api.yelp.com/v2/search',
+			'action' : 'http://api.yelp.com/v2/' + api,
 			'method' : 'GET',
 			'parameters' : parameters
+		};
+		
+		var accessor = {
+			consumerSecret : neighborhoodApp.auth.consumerSecret,
+			tokenSecret : neighborhoodApp.auth.accessTokenSecret
 		};
 		
 		OAuth.setTimestampAndNonce(message); 

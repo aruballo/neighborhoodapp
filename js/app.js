@@ -44,17 +44,36 @@ neighborhoodApp.model = function(){
 		}
 	};
 	
-	this.loadYelpResults = function(searchType, searchValue, location, radius, callback){
+	this.loadYelpSearchResults = function(searchType, searchValue, location, radius, callback){
+			
+		var parameters = [];
+
+		//If this request was made from the dropdowns menu, grab the category and subcategory
+		if(searchType == "dropdowns"){
+			parameters.push(["category_filter", searchValue[0]]);
+		}
+		//Else just grab the searchbar value
+		else{
+			parameters.push(["term", searchValue[0]]);
+		}	
 		
-		neighborhoodApp.helpers.yelpAjaxRequest(searchType, searchValue, location, radius, 
+		parameters.push(['radius_filter', radius]);
+		parameters.push(['location', location]);
+		parameters.push(['callback', 'cb']);
+		parameters.push(['oauth_consumer_key', neighborhoodApp.auth.consumerKey]);
+		parameters.push(['oauth_consumer_secret', neighborhoodApp.auth.consumerSecret]);
+		parameters.push(['oauth_token', neighborhoodApp.auth.accessToken]);
+		parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+		
+		neighborhoodApp.helpers.yelpAjaxRequest("search", parameters, 
 			function(data){
-				self.saveYelpResults(data, callback);
+				self.saveYelpSearchResults(data, callback);
 			}
 		);
 	};
 	
-	this.saveYelpResults = function(data, callback){
-		self.yelpResults = data;
+	this.saveYelpSearchResults = function(data, callback){
+		self.yelpSearchResults = data;
 		callback();
 	};
 };
@@ -126,7 +145,7 @@ neighborhoodApp.viewModel = function(){
 		
 		async.series([
 			function(callback){
-				self.model.loadYelpResults(searchType, searchValues, "92614", self.selectedRadius(), callback);
+				self.model.loadYelpSearchResults(searchType, searchValues, "92614", self.selectedRadius(), callback);
 			},
 			function(callback){
 				self.loadMarkers();
@@ -145,8 +164,8 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.loadMarkers = function(){
-		var markersArray = [];
-		for(var i = 0; i < self.model.yelpResults.total; i++){
+		//var markersArray = [];
+		/*for(var i = 0; i < self.model.yelpResults.total; i++){
 			var currentResult = self.model.yelpResults.businesses[i];
 			var lat = currentResult.location.coordinate.latitude;
 			var lng = currentResult.location.coordinate.longitude;
@@ -159,6 +178,17 @@ neighborhoodApp.viewModel = function(){
 			markersArray.push(marker);
 			marker.setMap(neighborhoodApp.mapView.map);
 		}
+		
+		async.each(self.model.yelpResults.businesses, 
+		function(){
+			var currentResult = this;
+			var lat = currentResult.location.coordinate.latitude;
+			var lng = currentResult.location.coordinate.longitude;
+			var title = currentResult.name;
+			var resultLatlng = new google.maps.LatLng(lat, lng);
+			
+		});
+		*/
 	};
 };
 

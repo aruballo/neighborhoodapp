@@ -14,7 +14,6 @@ neighborhoodApp.model = function(){
 			self.loadParentandSubCategories();
 			callback();	
 		});
-
 	};
 	
 	
@@ -44,6 +43,14 @@ neighborhoodApp.model = function(){
 		}
 	};
 	
+	this.setOAuthParameters = function(parameters){
+		parameters.push(['callback', 'cb']);
+		parameters.push(['oauth_consumer_key', neighborhoodApp.auth.consumerKey]);
+		parameters.push(['oauth_consumer_secret', neighborhoodApp.auth.consumerSecret]);
+		parameters.push(['oauth_token', neighborhoodApp.auth.accessToken]);
+		parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+	};
+	
 	this.loadYelpSearchResults = function(searchType, searchValue, location, radius, callback){
 			
 		var parameters = [];
@@ -56,14 +63,10 @@ neighborhoodApp.model = function(){
 		else{
 			parameters.push(["term", searchValue[0]]);
 		}	
-		
+
 		parameters.push(['radius_filter', radius]);
 		parameters.push(['location', location]);
-		parameters.push(['callback', 'cb']);
-		parameters.push(['oauth_consumer_key', neighborhoodApp.auth.consumerKey]);
-		parameters.push(['oauth_consumer_secret', neighborhoodApp.auth.consumerSecret]);
-		parameters.push(['oauth_token', neighborhoodApp.auth.accessToken]);
-		parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
+		self.setOAuthParameters(parameters);
 		
 		neighborhoodApp.helpers.yelpAjaxRequest("search", parameters, 
 			function(data){
@@ -75,6 +78,18 @@ neighborhoodApp.model = function(){
 	this.saveYelpSearchResults = function(data, callback){
 		self.yelpSearchResults = data;
 		callback();
+	};
+	
+	this.loadBusinessReviewForMarker = function(businessID, callback){
+	
+    	var parameters = [];
+		self.setOAuthParameters(parameters);
+	
+		neighborhoodApp.helpers.yelpAjaxRequest("business/" + businessID, parameters, 
+			function(data){
+				callback(data);
+			}
+		);
 	};
 };
 
@@ -164,31 +179,66 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.loadMarkers = function(){
-		//var markersArray = [];
-		/*for(var i = 0; i < self.model.yelpResults.total; i++){
-			var currentResult = self.model.yelpResults.businesses[i];
+		self.clearMarkers();
+		self.markersArray = [];
+		for(var i = 0; i < self.model.yelpSearchResults.total; i++){
+			var currentResult = self.model.yelpSearchResults.businesses[i];
 			var lat = currentResult.location.coordinate.latitude;
 			var lng = currentResult.location.coordinate.longitude;
 			var title = currentResult.name;
+			var id = currentResult.id;
 			var resultLatlng = new google.maps.LatLng(lat, lng);
 			var marker = new google.maps.Marker({
 				position: resultLatlng,
 				title: title
 			});
-			markersArray.push(marker);
+			google.maps.event.addListener(marker, 'click', 
+			(function(marker, id){
+				return function(){
+					self.model.loadBusinessReviewForMarker(id, 
+						function(data){
+							self.createContentWindow(marker, data);
+						}
+					);
+				};
+			}(marker, id)));
+			self.markersArray.push(marker);
 			marker.setMap(neighborhoodApp.mapView.map);
 		}
-		
-		async.each(self.model.yelpResults.businesses, 
-		function(){
-			var currentResult = this;
-			var lat = currentResult.location.coordinate.latitude;
-			var lng = currentResult.location.coordinate.longitude;
-			var title = currentResult.name;
-			var resultLatlng = new google.maps.LatLng(lat, lng);
+	
+	};
+	
+	this.clearMarkers = function(){
+		if(!self.markersArray){
+			return;
+		}
+		else{
+			for(var i = 0; i < self.markersArray.length; i++){
+				self.markersArray[i].setMap(null);
+			}
 			
+			self.markersArray = [];
+		}
+	};
+	
+	this.createContentWindow = function(marker, data){
+		var contentString = '<div id="content">'+
+			'<div id="siteNotice">'+
+			'</div>'+
+			'<h1 id="firstHeading" class="firstHeading">' + data.name + '</h1>'+
+			'<div id="bodyContent">'+
+			'<p>' + data.snippet_text + 
+			'</p>' +
+			'</div>'+
+			'</div>';
+		
+		
+		var infowindow = new google.maps.InfoWindow({
+			content: contentString
 		});
-		*/
+		
+		infowindow.open(neighborhoodApp.mapView.map, marker);
+
 	};
 };
 

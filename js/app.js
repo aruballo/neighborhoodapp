@@ -222,19 +222,31 @@ neighborhoodApp.viewModel = function(){
 	};
 	
 	this.createContentWindow = function(marker, data){
+		console.log(data);
 		var contentString = '<div id="content">'+
-			'<div id="siteNotice">'+
+			'<div style="float: left; margin-top: 10px; margin-right: 10px">'+
+			'<img src="' + data.image_url + '"></img>' +
 			'</div>'+
-			'<h1 id="firstHeading" class="firstHeading">' + data.name + '</h1>'+
-			'<div id="bodyContent">'+
+			'<div style="float: left">' + 
+			'<h1 id="firstHeading" style="margin-top: 0px">' + data.name + '</h1>'+
+			'<img style="width: 84px, height: 17px, margin: 0px" src="' + data.rating_img_url + '"></img>' +
+			'<p style="margin-top: 0px ">(' + data.review_count + ' reviews) </p>' + 
+			'</div>' + 
+			'<div id="bodyContent" style="clear: both">'+
+			'<img style="height: 50px; width: 50px; float:left; margin-right: 10px" src="' + data.snippet_image_url + '"></img>' +
+			'<h3>' + data.reviews[0].user.name + '</h3>' +
+			'<img src="' + data.reviews[0].rating_image_small_url + '"> </img>' + 
 			'<p>' + data.snippet_text + 
 			'</p>' +
+			'<a href="' + data.url + '" target="_blank"> Read more >>> </a>' +
 			'</div>'+
+			
 			'</div>';
 		
 		
 		var infowindow = new google.maps.InfoWindow({
-			content: contentString
+			content: contentString,
+			maxWidth: 400
 		});
 		
 		infowindow.open(neighborhoodApp.mapView.map, marker);

@@ -107,6 +107,7 @@ neighborhoodApp.viewModel = function(){
 		self.selectedRadius = ko.observable('');
 		self.selectedCategory = ko.observable('');
 		self.selectedSubcategory = ko.observable('');
+		self.searchValue = ko.observable('');
 		
 		self.selectedCategory.subscribe( 
 			function(value){
@@ -155,7 +156,7 @@ neighborhoodApp.viewModel = function(){
 			searchValues.push(self.selectedSubcategory().alias);
 		}
 		else{
-			searchValues.push('ice cream');
+			searchValues.push(self.searchValue());
 		}
 		
 		async.series([

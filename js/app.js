@@ -182,7 +182,7 @@ neighborhoodApp.viewModel = function(){
 	this.loadMarkers = function(){
 		self.clearMarkers();
 		self.markersArray = [];
-		for(var i = 0; i < self.model.yelpSearchResults.total; i++){
+		for(var i = 0; i < self.model.yelpSearchResults.businesses.length; i++){
 			var currentResult = self.model.yelpSearchResults.businesses[i];
 			var lat = currentResult.location.coordinate.latitude;
 			var lng = currentResult.location.coordinate.longitude;

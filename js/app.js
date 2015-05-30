@@ -16,7 +16,7 @@ neighborhoodApp.model = function(){
         });
     };
     
-    
+    //Create arrays for categories and subcategories
     this.loadParentandSubCategories = function(){
         self.parentCategories = [];
         self.subCategories = [];
@@ -32,6 +32,7 @@ neighborhoodApp.model = function(){
         }
     };
     
+    //Filter the subcategory array by the parent parameter
     this.filterSubCategoriesByParent = function(parent){
         self.filteredSubCategories = [];
         
@@ -43,6 +44,8 @@ neighborhoodApp.model = function(){
         }
     };
     
+    //Add the needed parameters for a yelp api request to the passed
+    //'parameters' array
     this.setOAuthParameters = function(parameters){
         parameters.push(['callback', 'cb']);
         parameters.push(['oauth_consumer_key', neighborhoodApp.auth.consumerKey]);
@@ -51,6 +54,7 @@ neighborhoodApp.model = function(){
         parameters.push(['oauth_signature_method', 'HMAC-SHA1']);
     };
     
+    //Makes a Yelp Search API request
     this.loadYelpSearchResults = function(searchType, searchValue, location, radius, callback){
             
         var parameters = [];
@@ -75,11 +79,13 @@ neighborhoodApp.model = function(){
         );
     };
     
+    //Save Yelp Search API results 
     this.saveYelpSearchResults = function(data, callback){
         self.yelpSearchResults = data;
         callback();
     };
     
+    //Make a Yelp Business API request
     this.loadBusinessReviewForMarker = function(businessID, callback){
     
         var parameters = [];
@@ -131,6 +137,7 @@ neighborhoodApp.viewModel = function(){
             
     };
     
+    //Switch between dropdowns or search bar
     this.toggleInputView = function(){
         if(self.inputView() == "dropdowns"){
             self.dropdownsVisible(true);
@@ -148,6 +155,7 @@ neighborhoodApp.viewModel = function(){
         return true;    
     };
     
+    //Make yelp request based on search type
     this.loadYelpData = function(){
         var searchType = self.dropdownsVisible() ? "dropdowns" : "searchbar";
         var searchValues = [];
@@ -179,6 +187,9 @@ neighborhoodApp.viewModel = function(){
         self.subCategories(self.model.filteredSubCategories);
     };
     
+    //Populate map with markers based on search results retrieved
+    //and attach click event listeners to each marker to trigger
+    //a yelp business API ajax request
     this.loadMarkers = function(){
         self.clearMarkers();
         self.markersArray = [];
@@ -222,8 +233,9 @@ neighborhoodApp.viewModel = function(){
         }
     };
     
+    //Template for content windows that come up when a 
+    //marker is clicked. 
     this.createContentWindow = function(marker, data){
-        console.log(data);
         var contentString = '<div id="content">'+
             '<div style="float: left; margin-top: 10px; margin-right: 10px">'+
             '<img src="' + data.image_url + '"></img>' +

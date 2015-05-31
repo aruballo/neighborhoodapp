@@ -271,8 +271,30 @@ neighborhoodApp.viewModel = function(){
 
 neighborhoodApp.mapView = {
     init: function(){
+        //Attempt to use the geolocation api to determine positon
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(this.showMap);
+        }
+        else{
+            this.showMap(null);
+        }
+    },
+    
+    //If null is passed it simply defaults to my home coordinates
+    showMap: function(position){
+        var latitude;
+        var longitude;
+        if(position){  
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+        }
+        else{
+           latitude = 33.679046;
+           longitude = -117.833076;
+        }
+        
         this.mapOptions = {
-            center: { lat: 33.679046, lng: -117.833076},
+            center: { lat: latitude, lng: longitude},
             zoom: 12
         };
         this.map = new google.maps.Map(document.getElementById('map-canvas'), this.mapOptions);

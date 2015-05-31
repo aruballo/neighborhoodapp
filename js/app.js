@@ -55,7 +55,7 @@ neighborhoodApp.model = function(){
     };
     
     //Makes a Yelp Search API request
-    this.loadYelpSearchResults = function(searchType, searchValue, location, radius, callback){
+    this.loadYelpSearchResults = function(searchType, searchValue, location, radius, limit, callback){
             
         var parameters = [];
 
@@ -70,6 +70,7 @@ neighborhoodApp.model = function(){
 
         parameters.push(['radius_filter', radius]);
         parameters.push(['location', location]);
+        parameters.push(['limit', limit]);
         self.setOAuthParameters(parameters);
         
         neighborhoodApp.helpers.yelpAjaxRequest("search", parameters, 
@@ -114,6 +115,7 @@ neighborhoodApp.viewModel = function(){
         self.selectedCategory = ko.observable('');
         self.selectedSubcategory = ko.observable('');
         self.searchValue = ko.observable('');
+        self.resultsLimit = 10;
         
         self.selectedCategory.subscribe( 
             function(value){
@@ -169,7 +171,7 @@ neighborhoodApp.viewModel = function(){
         
         async.series([
             function(callback){
-                self.model.loadYelpSearchResults(searchType, searchValues, "92614", self.selectedRadius(), callback);
+                self.model.loadYelpSearchResults(searchType, searchValues, "92614", self.selectedRadius(), self.resultsLimit, callback);
             },
             function(callback){
                 self.loadMarkers();

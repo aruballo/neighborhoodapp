@@ -5,22 +5,28 @@
 		<link rel="stylesheet" href="css/base.css">
 	</head>
 	<body>
-		<div>
-			<input type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView">Dropdowns</input>
-			<br>
-			<input type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">Search bar</input>
-		</div>
-		<div id="dropdowns" data-bind="visible: dropdownsVisible">
-			<select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: selectedCategory"></select>
-			<select id="SubcategoryFilterList" data-bind="options: subCategories, optionsText: 'title', value: selectedSubcategory"></select>
-			<select id="RadiusFilterList" data-bind="options: radiusList, value: selectedRadius"></select>
-			<button type="button" data-bind="click: loadYelpData">Search</button>
-		</div>
-		<div id="searchbar" data-bind="visible: searchbarVisible">
-			<input id="searchInput" data-bind="value: searchValue"></input>
-			<button type="button" data-bind="click: loadYelpData">Search</button>
-		</div>
-		<div id="map-canvas" style="width: 100%; height: 100%"></div>
+        <div id="wrapper">
+            <div id="filtersDiv">
+                <div id="radioBtns">
+                    <input type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView">Dropdowns</input>
+                    <br>
+                    <input type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">Search bar</input>
+                </div>
+                <div id="dropdowns" data-bind="visible: dropdownsVisible">
+                    <select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: selectedCategory"></select>
+                    <select id="SubcategoryFilterList" data-bind="options: subCategories, optionsText: 'title', value: selectedSubcategory"></select>
+                    <select id="RadiusFilterList" data-bind="options: radiusList, value: selectedRadius"></select>
+                    <button type="button" data-bind="click: loadYelpData">Search</button>
+                </div>
+                <div id="searchbar" data-bind="visible: searchbarVisible">
+                    <input id="searchInput" data-bind="value: searchValue"></input>
+                    <button type="button" data-bind="click: loadYelpData">Search</button>
+                </div>
+            </div>
+            <div id="mapDiv">
+                <div id="map-canvas" style="width: 100%; height: 100%"></div>
+            </div>
+        </div>
 	</body>
 	<script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
 	<script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>

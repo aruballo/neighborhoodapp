@@ -38,6 +38,10 @@ select {
     border-radius: 15px;
 }
 
+#searchbar {
+    visibility: hidden;
+}
+
 #mapDiv {
     height: 100%;
     width: 100%;

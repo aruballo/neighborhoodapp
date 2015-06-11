@@ -115,6 +115,7 @@ neighborhoodApp.viewModel = function(){
         self.selectedCategory = ko.observable('');
         self.selectedSubcategory = ko.observable('');
         self.searchValue = ko.observable('');
+        self.resultsList = ko.observableArray([]);
         self.resultsLimit = 10;
         
         self.selectedCategory.subscribe( 
@@ -175,6 +176,7 @@ neighborhoodApp.viewModel = function(){
             },
             function(callback){
                 self.loadMarkers();
+                self.populateResultsList();
                 callback();
             }
         ]);
@@ -189,6 +191,16 @@ neighborhoodApp.viewModel = function(){
         self.subCategories(self.model.filteredSubCategories);
     };
     
+    this.populateResultsList = function(){
+        self.resultsList.removeAll();
+        for(var i = 0; i < self.model.yelpSearchResults.businesses.length; i++){
+            self.resultsList.push(self.model.yelpSearchResults.businesses[i]);
+        }
+    };
+    
+    this.resultsListClick = function(index){
+        google.maps.event.trigger(self.markersArray[index], 'click');
+    };
     //Populate map with markers based on search results retrieved
     //and attach click event listeners to each marker to trigger
     //a yelp business API ajax request

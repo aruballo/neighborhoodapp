@@ -34,8 +34,8 @@
                         <tbody data-bind="foreach: resultsList">
                             <tr>
                                 <td>
-                                    <a data-bind="text: name"></a>
-                                </td>
+                                    <a data-bind="text: name, click: function(data, event) { neighborhoodApp.currentViewModel.resultsListClick($index(), data, event); }"></a>
+                                </td> 
                             </tr>
                         </tbody>
                     </table>

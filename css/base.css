@@ -44,10 +44,6 @@ select {
     border-radius: 15px;
 }
 
-#searchbar {
-    visibility: hidden;
-}
-
 #resultsListDiv {
     position: absolute;
     right: 150px;

@@ -11,8 +11,11 @@ This application makes use of Google Maps. The Google Maps API is documented her
 The locations are retrieved using the Yelp API. That API can be found here:          
 [Yelp API](https://www.yelp.com/developers/documentation/v2/overview)
 
-Also makes use of Async.js:     
+Makes use of Async.js:     
 [Async.js](https://github.com/caolan/async)
 
-And for MV*, this application makes use of Knockout.js:     
+For MV*, this application makes use of Knockout.js:     
 [Knockout.js](http://knockoutjs.com/)
+
+Makes use of jQuery for AJAX requests:     
+[jQuery](https://jquery.com/)

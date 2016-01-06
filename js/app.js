@@ -3,17 +3,11 @@ var neighborhoodApp = neighborhoodApp || {};
 neighborhoodApp.model = function(){
     var self = this;
 
-    // Init takes in a callback function which will be called when
-    // the ajax request is completed. This callback will be passed from
-    // an async.series call.
-    this.init = function(callback){
+    this.init = function(){
         self.fullCategoriesData;
         self.yelpResults;
-        neighborhoodApp.helpers.ajaxRequest("js/yelpCategories.json", null, "json", function(data){
-            self.fullCategoriesData = data
-            self.loadParentandSubCategories();
-            callback();
-        });
+        self.fullCategoriesData = neighborhoodApp.yelpCategories;
+        self.loadParentandSubCategories();
     };
 
     // Create arrays for categories and subcategories
@@ -129,20 +123,9 @@ neighborhoodApp.viewModel = function(){
 
         neighborhoodApp.mapView.init();
 
-        // Series allows the functions in the array parameter
-        // to execute in order. In this case, I want to make sure
-        // the model has finished loading all its data before
-        // the viewModel attempts to retrieve categories from it
-        async.series([
-            self.model.init,
-            function(callback){
-                self.loadCategories();
-                callback();
-            }
-        ], function(){
-            ko.applyBindings(self);
-        });
-
+        self.model.init();
+        self.loadCategories();
+        ko.applyBindings(self);
     };
 
     // Switch between dropdowns or search bar

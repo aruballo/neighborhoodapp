@@ -2,7 +2,7 @@
 Neighborhood Application for Udacity Course. This application requests your location and allows you to search for interesting locations near you. It presents this information on a large interactive map.
 
 ## How to use
-Users can select a category and a subcategory from the first 2 dropdowns in the dropdown mode, and select a distance (in miles) from their current location. Users can also switch into "Search Bar" mode to simply search by keywords. 
+Users can select a category and a subcategory from the first 2 dropdowns in the dropdown mode, and select a distance (in miles) from their current location. Users can also switch into "Search Bar" mode to simply search by keywords. A green marker will mark the users current location (or the default location if geolocation is not enabled); red markers will mark matching results. Clicking on the red markers will bring up a content window with the location title, the latest Yelp review and Yelp rating, as well as a link to the Yelp listing.
 
 ## Technologies used
 This application makes use of Google Maps. The Google Maps API is documented here:     

@@ -1,5 +1,5 @@
-html { 
-	height: 100% 
+html {
+	height: 100%
 }
 
 a {
@@ -8,14 +8,14 @@ a {
     cursor: pointer;
 }
 
-body { 
-	height: 100%; 
-	margin: 0; 
-	padding: 0 
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
 }
 
-#map-canvas { 
-	height: 100% 
+#map-canvas {
+	height: 100%
 }
 
 #user-controls {
@@ -35,8 +35,8 @@ select {
 
 #filtersDiv {
     position: absolute;
-    left: 80px;
-    top: 10px;
+    left: 10px;
+    top: 60px;
     z-index: 99;
     background-color: white;
     width: 600px;

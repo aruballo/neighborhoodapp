@@ -19,3 +19,7 @@ For MV*, this application makes use of Knockout.js:
 
 Makes use of jQuery for AJAX requests:     
 [jQuery](https://jquery.com/)
+
+## Issues 
+In Firefox if you deny the geolocation request, the error callback never fires and the map never loads. See bug here:
+https://bugzilla.mozilla.org/show_bug.cgi?id=675533

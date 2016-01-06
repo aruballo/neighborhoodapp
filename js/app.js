@@ -291,9 +291,20 @@ neighborhoodApp.viewModel = function(){
 
 neighborhoodApp.mapView = {
     init: function(){
-        //Attempt to use the geolocation api to determine positon
+        // Attempt to use the geolocation api to determine positon
+        var self = this;
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(this.showMap);
+            navigator.geolocation.getCurrentPosition(
+                function(position){
+                    self.showMap(position);
+                },
+                function(){
+                    self.showMap(null);
+                },
+                {
+                    timeout: 3000
+                }
+            );
         }
         else{
             this.showMap(null);

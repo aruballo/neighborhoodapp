@@ -8,15 +8,30 @@
         <div id="wrapper">
             <div id="filtersDiv">
                 <div id="radioBtns">
+                    <label for="searchView"> Select a search mode</label>
+                    <br>
                     <input type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView">Dropdowns</input>
                     <br>
                     <input type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">Search bar</input>
                 </div>
                 <div id="dropdowns" data-bind="visible: dropdownsVisible">
-                    <select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: selectedCategory"></select>
-                    <select id="SubcategoryFilterList" data-bind="options: subCategories, optionsText: 'title', value: selectedSubcategory"></select>
-                    <select id="RadiusFilterList" data-bind="options: radiusList, optionsText: 'Miles', optionsValue: 'Km', value: selectedRadius"></select>
-                    <button type="button" data-bind="click: loadYelpData">Search</button>
+                    <div class="dropdownDiv">
+                        <label for="CategoryFilterList">Categories</label>
+                        <br>
+                        <select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: selectedCategory"></select>
+                    </div>
+                    <div class="dropdownDiv">
+                        <label for="SubategoryFilterList">Subcategory</label>
+                        <br>
+                        <select id="SubcategoryFilterList" data-bind="options: subCategories, optionsText: 'title', value: selectedSubcategory"></select>
+                    </div>
+                    <div class="dropdownDiv">
+                        <label for="RadiusFilterList">Distance from location</label>
+                        <select id="RadiusFilterList" data-bind="options: radiusList, optionsText: 'Miles', optionsValue: 'Km', value: selectedRadius"></select>
+                    </div>
+                    <div class="dropdownDiv">
+                        <button type="button" data-bind="click: loadYelpData">Search</button>
+                    </div>
                 </div>
                 <div id="searchbar" data-bind="visible: searchbarVisible">
                     <input id="searchInput" data-bind="value: searchValue"></input>

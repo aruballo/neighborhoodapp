@@ -6,7 +6,7 @@
 	</head>
 	<body>
         <div id="wrapper">
-            <div id="filtersDiv">
+            <div id="filtersDiv" class="transparency">
                 <div id="radioBtns">
                     <label for="searchView"> Select a search mode</label>
                     <br>
@@ -34,11 +34,13 @@
                     </div>
                 </div>
                 <div id="searchbar" data-bind="visible: searchbarVisible">
+                    <label for="searchInput">Enter keyword to search by</label>
+                    <br>
                     <input id="searchInput" data-bind="value: searchValue"></input>
                     <button type="button" data-bind="click: loadYelpData">Search</button>
                 </div>
             </div>
-            <div id="resultsListDiv">
+            <div id="resultsListDiv" class="transparency">
                 <div id="resultsTableDiv">
                     <table id="resultsTable" data-bind="with: neighborhoodApp.currentViewModel">
                         <thead>

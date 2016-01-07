@@ -23,6 +23,10 @@ body {
     justify-content: center;
 }
 
+.transparency {
+    opacity: .9;
+}
+
 .dropdownDiv {
     flex-grow: 1;
     width: 150px;
@@ -76,6 +80,7 @@ select {
 }
 
 #searchbar {
+    margin-top: 5px;
     margin-left: 10px;
 }
 

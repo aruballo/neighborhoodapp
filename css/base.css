@@ -4,7 +4,7 @@ html {
 
 a {
     text-decoration: underline;
-    color: blue;
+    color: lightgray;
     cursor: pointer;
 }
 
@@ -16,6 +16,15 @@ body {
 
 label {
     font-weight: bold;
+    color: #FF520E;
+}
+
+th {
+    color: #FF520E;
+}
+
+select {
+    width: 150px;
 }
 
 #dropdowns {
@@ -27,15 +36,6 @@ label {
     justify-content: center;
 }
 
-.transparency {
-    opacity: .9;
-}
-
-.dropdownDiv {
-    flex-grow: 1;
-    width: 150px;
-}
-
 #map-canvas {
     height: 100%
 }
@@ -43,10 +43,6 @@ label {
 #user-controls {
     height: 50px;
     width: 100%
-}
-
-select {
-    width: 150px;
 }
 
 #wrapper {
@@ -61,7 +57,7 @@ select {
     left: 120px;
     top: 10px;
     z-index: 99;
-    background-color: white;
+    background-color: #494949;
     width: 650px;
     height: 100px;
 }
@@ -71,7 +67,7 @@ select {
     right: 20px;
     top: 10px;
     z-index: 99;
-    background-color: white;
+    background-color: #494949;
     width: 200px;
     height: 400px;
 }
@@ -86,4 +82,15 @@ select {
     margin-left: 10px;
 }
 
+.transparency {
+    opacity: .9;
+}
 
+.dropdownDiv {
+    flex-grow: 1;
+    width: 150px;
+}
+
+.searchView {
+    color: lightgray;
+}

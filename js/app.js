@@ -307,11 +307,17 @@ neighborhoodApp.mapView = {
            longitude = -117.833076;
         }
 
+        var styledMap = new google.maps.StyledMapType(neighborhoodApp.mapStyle, {
+            name: 'Styled Map'
+        });
+
         neighborhoodApp.mapView.mapOptions = {
             center: { lat: latitude, lng: longitude},
             zoom: 12
         };
         neighborhoodApp.mapView.map = new google.maps.Map(document.getElementById('map-canvas'), neighborhoodApp.mapView.mapOptions);
+        neighborhoodApp.mapView.map.mapTypes.set('map_style', styledMap);
+        neighborhoodApp.mapView.map.setMapTypeId('map_style');
 
         var resultLatlng = new google.maps.LatLng(latitude, longitude);
         var marker = new google.maps.Marker({

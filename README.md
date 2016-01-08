@@ -20,7 +20,7 @@ For MV*, this application makes use of Knockout.js:
 Makes use of jQuery for AJAX requests:     
 [jQuery](https://jquery.com/)
 
-Google map theme located here:
+Google map theme located here:     
 [Papuportal Dark](https://snazzymaps.com/style/20053/papuportal-dark)
 ## Issues 
 In Firefox if you deny the geolocation request, the error callback never fires and the map never loads. See bug here:

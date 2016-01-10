@@ -28,7 +28,7 @@ select {
     width: 150px;
 }
 
-#dropdowns {
+#dropdowns, #searchBar {
     margin-top: 5px;
     display: flex;
     flex-direction: row;
@@ -55,7 +55,7 @@ select {
 #filtersDiv {
     padding: 10px;
     position: absolute;
-    left: 120px;
+    left: 10px;
     top: 10px;
     z-index: 99;
     background-color: #494949;
@@ -65,7 +65,7 @@ select {
 
 #resultsListDiv {
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 10px;
     z-index: 99;
     background-color: #494949;
@@ -78,16 +78,11 @@ select {
     width: 100%;
 }
 
-#searchbar {
-    margin-top: 5px;
-    margin-left: 10px;
-}
-
 .transparency {
     opacity: .9;
 }
 
-.dropdownDiv {
+.dropdownDiv, .searchDiv {
     flex-grow: 1;
     width: 150px;
 }
@@ -98,7 +93,7 @@ select {
 
 .searchButton {
     height: 40px;
-    width: 80px;
+    width: 100px;
     background-color: #FF520E;
     border: 0 rgba(0,0,0,0);
     border-radius: 2px;
@@ -110,5 +105,9 @@ select {
 .searchButton:hover{
     background-color: #FF200E;
     cursor: pointer;
+}
+
+.gmnoprint {
+    display: none;
 }
 

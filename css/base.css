@@ -95,3 +95,20 @@ select {
 .searchView {
     color: lightgray;
 }
+
+.searchButton {
+    height: 40px;
+    width: 80px;
+    background-color: #FF520E;
+    border: 0 rgba(0,0,0,0);
+    border-radius: 2px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+.searchButton:hover{
+    background-color: #FF200E;
+    cursor: pointer;
+}
+

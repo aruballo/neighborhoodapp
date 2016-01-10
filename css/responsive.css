@@ -23,7 +23,11 @@
 	}
 
 	#filtersDiv {
-		height: 200px;
+		height: 230px;
 		width: 50%;
+	}
+
+	.dropdownDiv {
+		padding: 2px;
 	}
 }

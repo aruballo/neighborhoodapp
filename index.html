@@ -36,14 +36,14 @@
                         <select id="RadiusFilterList" data-bind="options: radiusList, optionsText: 'Miles', optionsValue: 'Km', value: selectedRadius"></select>
                     </div>
                     <div class="dropdownDiv">
-                        <button type="button" data-bind="click: loadYelpData">Search</button>
+                        <button type="button" class="searchButton" data-bind="click: loadYelpData">Search</button>
                     </div>
                 </div>
                 <div id="searchbar" data-bind="visible: searchbarVisible">
                     <label for="searchInput">Enter keyword to search by</label>
                     <br>
                     <input id="searchInput" data-bind="value: searchValue"></input>
-                    <button type="button" data-bind="click: loadYelpData">Search</button>
+                    <button type="button" class="searchButton" data-bind="click: loadYelpData">Search</button>
                 </div>
             </div>
             <div id="resultsListDiv" class="transparency">

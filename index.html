@@ -61,7 +61,7 @@
                         <tbody data-bind="foreach: resultsList">
                             <tr>
                                 <td>
-                                    <span data-bind="text: ($index() + 1)"></span>: <a data-bind="text: name, click: function(data, event) { neighborhoodApp.currentViewModel.resultsListClick($index(), data, event); }"></a>
+                                    <span data-bind="text: ($index() + 1)"></span> <a data-bind="text: name, click: function(data, event) { neighborhoodApp.currentViewModel.resultsListClick($index(), data, event); }"></a>
                                 </td>
                             </tr>
                         </tbody>

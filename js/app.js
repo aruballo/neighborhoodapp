@@ -290,7 +290,7 @@ neighborhoodApp.mapView = {
             );
         }
         else{
-            this.showMap(null);
+            self.showMap(null);
         }
     },
 

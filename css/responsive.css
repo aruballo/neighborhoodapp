@@ -9,6 +9,8 @@
 		left: 0px;
 		top: 0px;
 		width: 100%;
+		padding: 0px;
+		height: 110px;
 	}
 }
 
@@ -19,7 +21,7 @@
 	}
 
 	#filtersDiv {
-		height: 230px;
+		height: 240px;
 		width: 170px;
 	}
 

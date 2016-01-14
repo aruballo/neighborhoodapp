@@ -22,7 +22,7 @@
     	width: 100%;
     	display: block;
     	top: 110px;
-    	border-top: solid 2px white;
+    	border-top: solid 2px #FF520E;
 	}
 
 	#minArrow {
@@ -85,7 +85,7 @@
     	width: 40px;
     	top: 0px;
     	left: 170px;
-    	border-left: solid 2px white;
+    	border-left: solid 2px #FF520E;
     	border-top: none;
 
 	}

@@ -64,6 +64,10 @@ select {
     height: 100px;
 }
 
+#filtersVisibilityTrigger {
+    display: none;
+}
+
 #resultsListDiv {
     position: absolute;
     right: 10px;
@@ -77,6 +81,10 @@ select {
 #mapDiv {
     height: 100%;
     width: 100%;
+}
+
+#minArrow2 {
+    display: none;
 }
 
 .transparency {

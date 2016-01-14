@@ -112,13 +112,11 @@ neighborhoodApp.viewModel = function(){
         self.searchValue = ko.observable('');
         self.resultsList = ko.observableArray([]);
         self.resultsLimit = 10;
-
         self.selectedCategory.subscribe(
             function(value){
                 self.loadSubCategories(value);
             }
         );
-
         self.model = new neighborhoodApp.model();
 
         neighborhoodApp.mapView.init();
@@ -144,6 +142,13 @@ neighborhoodApp.viewModel = function(){
         //default action to occur
 
         return true;
+    };
+
+    this.hideFilters = function(){
+        $("#filtersDiv").toggleClass("hideFilter");
+        $("#filtersVisibilityTrigger").toggleClass("hideFilter");
+        $("#minArrow").toggleClass("flipArrow");
+        $("#minArrow2").toggleClass("flipArrow");
     };
 
     //Make yelp request based on search type

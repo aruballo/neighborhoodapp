@@ -5,6 +5,7 @@
 }
 
 @media screen and (max-width: 700px){
+
 	#filtersDiv {
 		left: 0px;
 		top: 0px;
@@ -12,9 +13,49 @@
 		padding: 0px;
 		height: 110px;
 	}
+
+	#filtersVisibilityTrigger {
+   		position: absolute;
+    	height: 40px;
+    	background-color: #494949;
+    	z-index: 99;
+    	width: 100%;
+    	display: block;
+    	top: 110px;
+    	border-top: solid 2px white;
+	}
+
+	#minArrow {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 30px;
+		height: 30px;
+		padding: 5px;
+	}
+
+	#minArrow2 {
+    	display: none;
+	}
+
+	.flipArrow {
+		-moz-transform: scaleY(-1);
+        -o-transform: scaleY(-1);
+        -webkit-transform: scaleY(-1);
+        transform: scaleY(-1);
+	}
+
+	.hideFilter {
+		-webkit-transform: translate(0,-110px);
+    	-moz-transform: translate(0,-110px);
+    	-o-transform: translate(0,-110px);
+   		-ms-transform: translate(0,-110px);
+    	transform: translate(0,-110px);
+	}
 }
 
 @media screen and (max-width: 540px){
+
 	#dropdowns, #searchBar {
 		flex-direction: column;
 		align-items: flex-start;
@@ -25,7 +66,47 @@
 		width: 170px;
 	}
 
+	#minArrow2 {
+		display: block;
+		top: 50%;
+		margin-top: -15px;
+		width: 30px;
+		height: 30px;
+		padding: 5px;
+		position: absolute;
+	}
+
+	#minArrow {
+		display: none;
+	}
+
+	#filtersVisibilityTrigger {
+    	height: 250px;
+    	width: 40px;
+    	top: 0px;
+    	left: 170px;
+    	border-left: solid 2px white;
+    	border-top: none;
+
+	}
+
+	.flipArrow {
+		-webkit-transform: rotate(180deg);
+    	-moz-transform: rotate(180deg);
+    	-o-transform: rotate(180deg);
+    	-ms-transform: rotate(180deg);
+    	transform: rotate(180deg);
+	}
+
 	.dropdownDiv, .searchDiv {
 		padding: 2px;
+	}
+
+	.hideFilter {
+		-webkit-transform: translate(-170px, 0);
+    	-moz-transform: translate(-170px, 0);
+    	-o-transform: translate(-170px, 0);
+   		-ms-transform: translate(-170px, 0);
+    	transform: translate(-170px, 0);
 	}
 }

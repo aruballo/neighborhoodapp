@@ -8,6 +8,7 @@ neighborhoodApp.model = function(){
         self.yelpResults;
         self.fullCategoriesData = neighborhoodApp.yelpCategories;
         self.loadParentandSubCategories();
+        self.locationMarker;
     };
 
     // Create arrays for categories and subcategories
@@ -92,6 +93,26 @@ neighborhoodApp.model = function(){
             }
         );
     };
+
+    // Get LatLng for location marker
+    this.loadLocationCoordinates = function(address, callback){
+        var geocoder = geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+            'address' : address
+        },
+        function(results, status){
+            if (status == google.maps.GeocoderStatus.OK) {
+                self.locationMarker = new google.maps.Marker({
+                    map: neighborhoodApp.mapView.map,
+                    position: results[0].geometry.location
+                });
+                self.locationMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+                callback();
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        })
+    };
 };
 
 neighborhoodApp.viewModel = function(){
@@ -103,6 +124,7 @@ neighborhoodApp.viewModel = function(){
         self.inputView = ko.observable("dropdowns");
         self.dropdownsVisible = ko.observable(true);
         self.searchbarVisible = ko.observable(false);
+        self.manualLocationVisible = ko.observable(false);
         self.categories = ko.observableArray([]);
         self.subCategories = ko.observableArray([]);
         self.radiusList = ko.observableArray([{Miles: 5, Km: 8046}, {Miles: 10, Km: 16093}, {Miles: 15, Km: 24140}, {Miles: 20, Km: 32186}])
@@ -110,6 +132,7 @@ neighborhoodApp.viewModel = function(){
         self.selectedCategory = ko.observable('');
         self.selectedSubcategory = ko.observable('');
         self.searchValue = ko.observable('');
+        self.manualLocationValue = ko.observable('');
         self.resultsList = ko.observableArray([]);
         self.resultsLimit = 10;
         self.selectedCategory.subscribe(
@@ -227,8 +250,60 @@ neighborhoodApp.viewModel = function(){
             self.markersArray.push(marker);
             marker.setMap(neighborhoodApp.mapView.map);
         }
-
     };
+
+    this.locationOption = function(type){
+        if (type === "manual"){
+            self.manualLocationVisible(true);
+        }
+        else if(type === "detect"){
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position){
+                        var latitude;
+                        var longitude;
+                        if(position){
+                            latitude = position.coords.latitude;
+                            longitude = position.coords.longitude;
+                        }
+                        else{
+                           latitude = 33.679046;
+                           longitude = -117.833076;
+                        }
+
+                        var resultLatlng = new google.maps.LatLng(latitude, longitude);
+                        var marker = new google.maps.Marker({
+                            position: resultLatlng,
+                            title: "Calculated Location"
+                        });
+
+                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+                        marker.setMap(neighborhoodApp.mapView.map);
+                        neighborhoodApp.mapView.map.setCenter(marker.position);
+                    },
+                    function(){
+                        alert("Unable to retrieve location");
+                    },
+                    {
+                        timeout: 3000
+                    }
+                );
+            }
+        }
+    }
+
+    this.loadManualLocation = function(){
+        async.series([
+                function(callback){
+                    self.model.loadLocationCoordinates(self.manualLocationValue(), callback);
+                },
+                function(callback){
+                    self.manualLocationVisible(false);
+                    self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
+                    neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
+                }
+        ]);
+    }
 
     this.clearMarkers = function(){
         if(!self.markersArray){
@@ -279,39 +354,14 @@ neighborhoodApp.viewModel = function(){
 
 neighborhoodApp.mapView = {
     init: function(){
-        // Attempt to use the geolocation api to determine positon
         var self = this;
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(
-                function(position){
-                    self.showMap(position);
-                },
-                function(){
-                    self.showMap(null);
-                },
-                {
-                    timeout: 3000
-                }
-            );
-        }
-        else{
-            self.showMap(null);
-        }
+        self.showMap();
     },
 
     //If null is passed it simply defaults to my home coordinates
     showMap: function(position){
-        var latitude;
-        var longitude;
-        if(position){
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-        }
-        else{
-           latitude = 33.679046;
-           longitude = -117.833076;
-        }
-
+        var latitude = 33.679046;
+        var longitude = -117.833076;
         var styledMap = new google.maps.StyledMapType(neighborhoodApp.mapStyle, {
             name: 'Styled Map'
         });
@@ -323,15 +373,6 @@ neighborhoodApp.mapView = {
         neighborhoodApp.mapView.map = new google.maps.Map(document.getElementById('map-canvas'), neighborhoodApp.mapView.mapOptions);
         neighborhoodApp.mapView.map.mapTypes.set('map_style', styledMap);
         neighborhoodApp.mapView.map.setMapTypeId('map_style');
-
-        var resultLatlng = new google.maps.LatLng(latitude, longitude);
-        var marker = new google.maps.Marker({
-            position: resultLatlng,
-            title: "Calculated Location"
-        });
-
-        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
-        marker.setMap(neighborhoodApp.mapView.map);
     }
 };
 

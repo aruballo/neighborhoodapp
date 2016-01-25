@@ -87,6 +87,33 @@ select {
     display: none;
 }
 
+#manualLocationDiv {
+    position: absolute;
+    z-index: 99;
+    background-color: #494949;
+    margin: 0 auto;
+    left: 0px;
+    right: 0px;
+    top: 50%;
+    width: 200px;
+    height: 75px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#manualLocationInput, #searchInput {
+    width: 95%;
+}
+
+.inline-block{
+    display: inline-block;
+    vertical-align: top;
+}
+
 .transparency {
     opacity: .9;
 }
@@ -100,7 +127,7 @@ select {
     color: lightgray;
 }
 
-.searchButton {
+.orangeButton {
     height: 40px;
     width: 100px;
     background-color: #FF520E;
@@ -111,9 +138,13 @@ select {
     color: white;
 }
 
-.searchButton:hover{
+.orangeButton:hover{
     background-color: #FF200E;
     cursor: pointer;
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
 }
 
 .gmnoprint {

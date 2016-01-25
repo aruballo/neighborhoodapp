@@ -11,14 +11,22 @@
     <body>
         <div id="wrapper">
             <div id="filtersDiv" class="transparency">
-                <div id="radioBtns">
-                    <label for="searchView"> Select a search mode</label>
-                    <br>
-                    <input id="dropdownsRadio"type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView"></input>
-                    <label class="searchView" for="dropdownsRadio">Dropdowns</label>
-                    <br>
-                    <input id="searchbarRadio" type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView"></input>
-                    <label class="searchView" for="searchbarRadio">Search Bar</label>
+                <div id="locationDiv" class="inline-block">
+                    <label for="locationButtons"> Select a location </label>
+                    <div id="locationButtons">
+                        <button type="button" class="orangeButton" id="manualLocation" data-bind="click: locationOption.bind($data, 'manual')">Enter a Location</button>
+                        <button type="button" class="orangeButton" id="detectLocation" data-bind="click: locationOption.bind($data, 'detect')">Detect Location</button>
+                    </div>
+                </div>
+                <div id="radioBtns" class="inline-block">
+                    <label for="searchModes"> Select a search mode</label>
+                    <div id="searchModes">
+                        <input id="dropdownsRadio"type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView"></input>
+                        <label class="searchView" for="dropdownsRadio">Dropdowns</label>
+                        <br>
+                        <input id="searchbarRadio" type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView"></input>
+                        <label class="searchView" for="searchbarRadio">Search Bar</label>
+                    </div>
                 </div>
                 <div id="dropdowns" data-bind="visible: dropdownsVisible">
                     <div class="dropdownDiv">
@@ -36,7 +44,7 @@
                         <select id="RadiusFilterList" data-bind="options: radiusList, optionsText: 'Miles', optionsValue: 'Km', value: selectedRadius"></select>
                     </div>
                     <div class="dropdownDiv">
-                        <button type="button" class="searchButton" data-bind="click: loadYelpData">Search</button>
+                        <button type="button" class="orangeButton" data-bind="click: loadYelpData">Search</button>
                     </div>
                 </div>
                 <div id="searchBar" data-bind="visible: searchbarVisible">
@@ -46,7 +54,7 @@
                         <input id="searchInput" data-bind="value: searchValue"></input>
                     </div>
                     <div class="searchDiv">
-                        <button type="button" class="searchButton" data-bind="click: loadYelpData">Search</button>
+                        <button type="button" class="orangeButton" data-bind="click: loadYelpData">Search</button>
                     </div>
                 </div>
             </div>
@@ -74,6 +82,11 @@
             </div>
             <div id="mapDiv">
                 <div id="map-canvas" style="width: 100%; height: 100%"></div>
+            </div>
+            <div id="manualLocationDiv" class="transparency" data-bind="visible: manualLocationVisible">
+                <label for="manualLocationInput" class="margin-bottom"> Enter a valid address </label>
+                <input id="manualLocationInput" data-bind="value: manualLocationValue" class="margin-bottom"> </input>
+                <button type="button" class="orangeButton" id="acceptManualLocation" data-bind="click: loadManualLocation">Accept Location</button>
             </div>
         </div>
     </body>

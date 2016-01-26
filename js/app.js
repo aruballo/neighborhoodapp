@@ -50,7 +50,7 @@ neighborhoodApp.model = function(){
     };
 
     // Makes a Yelp Search API request
-    this.loadYelpSearchResults = function(searchType, searchValue, location, radius, limit, callback){
+    this.loadYelpSearchResults = function(searchType, searchValue, radius, limit, callback){
 
         var parameters = [];
 
@@ -63,8 +63,18 @@ neighborhoodApp.model = function(){
             parameters.push(["term", searchValue[0]]);
         }
 
+        if(self.locationMarker){
+            var position = self.locationMarker.position;
+            var lat = position.lat();
+            var lng = position.lng();
+        }
+        else{
+            var lat = 33.679046;
+            var lng = -117.833076;
+        }
+
         parameters.push(['radius_filter', radius]);
-        parameters.push(['location', location]);
+        parameters.push(['ll', lat + ',' + lng]);
         parameters.push(['limit', limit]);
         self.setOAuthParameters(parameters);
 
@@ -191,7 +201,7 @@ neighborhoodApp.viewModel = function(){
         // on the map and list
         async.series([
             function(callback){
-                self.model.loadYelpSearchResults(searchType, searchValues, "92614", self.selectedRadius(), self.resultsLimit, callback);
+                self.model.loadYelpSearchResults(searchType, searchValues, self.selectedRadius(), self.resultsLimit, callback);
             },
             function(callback){
                 self.loadMarkers();
@@ -280,6 +290,7 @@ neighborhoodApp.viewModel = function(){
                         marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
                         marker.setMap(neighborhoodApp.mapView.map);
                         neighborhoodApp.mapView.map.setCenter(marker.position);
+                        self.model.locationMarker = marker;
                     },
                     function(){
                         alert("Unable to retrieve location");

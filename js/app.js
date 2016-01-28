@@ -151,6 +151,7 @@ neighborhoodApp.viewModel = function(){
             }
         );
         self.model = new neighborhoodApp.model();
+        self.infoWindow = new google.maps.InfoWindow;
 
         neighborhoodApp.mapView.init();
 
@@ -332,7 +333,7 @@ neighborhoodApp.viewModel = function(){
     //Template for content windows that come up when a
     //marker is clicked.
     this.createContentWindow = function(marker, data){
-        var contentString = '<div id="content">'+
+        var contentString = '<div id="content" style="max-width: 400px">'+
             '<div style="float: left; margin-top: 10px; margin-right: 10px">'+
             '<img src="' + data.image_url + '"></img>' +
             '</div>'+
@@ -353,13 +354,8 @@ neighborhoodApp.viewModel = function(){
             '</div>';
 
 
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString,
-            maxWidth: 400
-        });
-
-        infowindow.open(neighborhoodApp.mapView.map, marker);
-
+        self.infoWindow.setContent(contentString);
+        self.infoWindow.open(neighborhoodApp.mapView.map, marker);
     };
 };
 

@@ -282,16 +282,15 @@ neighborhoodApp.viewModel = function(){
                            longitude = -117.833076;
                         }
 
+                        self.model.locationMarker.setMap(null);
+
                         var resultLatlng = new google.maps.LatLng(latitude, longitude);
-                        var marker = new google.maps.Marker({
+                        self.model.locationMarker = new google.maps.Marker({
                             position: resultLatlng,
                             title: "Calculated Location"
                         });
-
-                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
-                        marker.setMap(neighborhoodApp.mapView.map);
-                        neighborhoodApp.mapView.map.setCenter(marker.position);
-                        self.model.locationMarker = marker;
+                        self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
+                        neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
                     },
                     function(){
                         alert("Unable to retrieve location");
@@ -308,6 +307,9 @@ neighborhoodApp.viewModel = function(){
         async.series([
                 function(callback){
                     self.model.loadLocationCoordinates(self.manualLocationValue(), callback);
+                    if(self.model.locationMarker.setMap){
+                        self.model.locationMarker.setMap(null);
+                    }
                 },
                 function(callback){
                     self.manualLocationVisible(false);

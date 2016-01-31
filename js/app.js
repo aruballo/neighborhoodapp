@@ -8,7 +8,7 @@ neighborhoodApp.model = function(){
         self.yelpResults;
         self.fullCategoriesData = neighborhoodApp.yelpCategories;
         self.loadParentandSubCategories();
-        self.locationMarker;
+        self.locationMarker = new google.maps.Marker({});
     };
 
     // Create arrays for categories and subcategories
@@ -116,7 +116,7 @@ neighborhoodApp.model = function(){
                     map: neighborhoodApp.mapView.map,
                     position: results[0].geometry.location
                 });
-                self.locationMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+                self.locationMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
                 callback();
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
@@ -289,6 +289,7 @@ neighborhoodApp.viewModel = function(){
                             position: resultLatlng,
                             title: "Calculated Location"
                         });
+                        self.model.locationMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
                         self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
                         neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
                     },

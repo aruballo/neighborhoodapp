@@ -63,7 +63,7 @@ neighborhoodApp.model = function(){
             parameters.push(["term", searchValue[0]]);
         }
 
-        if(self.locationMarker){
+        if(self.locationMarker.position){
             var position = self.locationMarker.position;
             var lat = position.lat();
             var lng = position.lng();
@@ -340,17 +340,17 @@ neighborhoodApp.viewModel = function(){
     //Template for content windows that come up when a
     //marker is clicked.
     this.createContentWindow = function(marker, data){
-        var contentString = '<div id="content" style="max-width: 400px">'+
-            '<div style="float: left; margin-top: 10px; margin-right: 10px">'+
+        var contentString = '<div id="infoWindow">'+
+            '<div id="infoWindowImageDiv">'+
             '<img src="' + data.image_url + '"></img>' +
             '</div>'+
-            '<div style="float: left">' +
-            '<h1 id="firstHeading" style="margin-top: 0px">' + data.name + '</h1>'+
-            '<img style="width: 84px, height: 17px, margin: 0px" src="' + data.rating_img_url + '"></img>' +
-            '<p style="margin-top: 0px ">(' + data.review_count + ' reviews) </p>' +
+            '<div id="infoWindowLocationTitle">' +
+            '<h1 id="infoWindowHeading">' + data.name + '</h1>'+
+            '<img id="infoWindowRatingImage" src="' + data.rating_img_url + '"></img>' +
+            '<p id="infowWindowReviewCount">(' + data.review_count + ' reviews) </p>' +
             '</div>' +
-            '<div id="bodyContent" style="clear: both">'+
-            '<img style="height: 50px; width: 50px; float:left; margin-right: 10px" src="' + data.snippet_image_url + '"></img>' +
+            '<div id="infoWindowContent">'+
+            '<img id="infoWindowReviewerImage" src="' + data.snippet_image_url + '"></img>' +
             '<h3>' + data.reviews[0].user.name + '</h3>' +
             '<img src="' + data.reviews[0].rating_image_small_url + '"> </img>' +
             '<p>' + data.snippet_text +

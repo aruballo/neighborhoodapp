@@ -121,6 +121,40 @@ select {
     margin: 5px;
 }
 
+#infoWindow {
+    max-width: 400px;
+}
+
+#infoWindowImageDiv {
+    float: left; 
+    margin-top: 10px; 
+    margin-right: 10px
+}
+
+#infoWindowLocationTitle{
+    float: left;
+}
+
+#infoWindowHeading, #infoWindowReviewCount {
+    margin-top: 0px;
+}
+
+#infowWindowRatingImage {
+    width: 84px; 
+    height: 17px; 
+    margin: 0px;
+}
+
+#infoWindowContent {
+    clear: both;
+}
+
+#infoWindowReviewerImage {
+    height: 50px;
+    width: 50px;
+    float:left;
+    margin-right: 10px;
+}
 
 .inline-block{
     display: inline-block;

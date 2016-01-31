@@ -32,6 +32,7 @@ select {
 #dropdowns, #searchBar {
     margin-top: 5px;
     display: flex;
+    display: -webkit-flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
@@ -99,6 +100,7 @@ select {
     height: 100px;
     padding: 15px;
     display: flex;
+    display: -webkit-flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
@@ -111,6 +113,7 @@ select {
 
 #manualActions {
     display: flex;
+    display: -webkit-flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
@@ -126,8 +129,8 @@ select {
 }
 
 #infoWindowImageDiv {
-    float: left; 
-    margin-top: 10px; 
+    float: left;
+    margin-top: 10px;
     margin-right: 10px
 }
 
@@ -140,8 +143,8 @@ select {
 }
 
 #infowWindowRatingImage {
-    width: 84px; 
-    height: 17px; 
+    width: 84px;
+    height: 17px;
     margin: 0px;
 }
 

@@ -69,6 +69,7 @@
 	}
 	#dropdowns, #searchBar {
 		flex-direction: column;
+		-webkit-flex-direction: row;
 		align-items: flex-start;
 		justify-content: space-between;
 	}

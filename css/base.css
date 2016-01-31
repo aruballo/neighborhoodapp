@@ -96,7 +96,7 @@ select {
     right: 0px;
     top: 50%;
     width: 200px;
-    height: 75px;
+    height: 100px;
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -108,6 +108,19 @@ select {
 #manualLocationInput, #searchInput {
     width: 95%;
 }
+
+#manualActions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#manualActions > button {
+    margin: 5px;
+}
+
 
 .inline-block{
     display: inline-block;

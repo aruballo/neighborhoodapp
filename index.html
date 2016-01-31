@@ -86,7 +86,10 @@
             <div id="manualLocationDiv" class="transparency" data-bind="visible: manualLocationVisible">
                 <label for="manualLocationInput" class="margin-bottom"> Enter a valid address </label>
                 <input id="manualLocationInput" data-bind="value: manualLocationValue" class="margin-bottom"> </input>
-                <button type="button" class="orangeButton" id="acceptManualLocation" data-bind="click: loadManualLocation">Accept Location</button>
+                <div id="manualActions">
+                    <button type="button" class="orangeButton" id="acceptManualLocation" data-bind="click: loadManualLocation">Accept Location</button>
+                    <button type="button" class="orangeButton" id="cancelManualLocation" data-bind="click: loadManualLocation">Cancel</button>
+                </div>
             </div>
         </div>
     </body>

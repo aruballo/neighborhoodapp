@@ -304,6 +304,10 @@ neighborhoodApp.viewModel = function(){
     }
 
     this.loadManualLocation = function(){
+        if(arguments[1].target.id == "cancelManualLocation"){
+            self.manualLocationVisible(false);
+            return;
+        }
         async.series([
                 function(callback){
                     self.model.loadLocationCoordinates(self.manualLocationValue(), callback);

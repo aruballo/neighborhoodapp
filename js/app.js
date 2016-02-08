@@ -266,6 +266,7 @@ neighborhoodApp.viewModel = function(){
     this.locationOption = function(type){
         if (type === "manual"){
             self.manualLocationVisible(true);
+            $("#modal").toggleClass("modalDisplay");
         }
         else if(type === "detect"){
             if (navigator.geolocation) {
@@ -307,6 +308,7 @@ neighborhoodApp.viewModel = function(){
     this.loadManualLocation = function(){
         if(arguments[1].target.id == "cancelManualLocation"){
             self.manualLocationVisible(false);
+            $("#modal").toggleClass("modalDisplay");
             return;
         }
         async.series([
@@ -320,6 +322,7 @@ neighborhoodApp.viewModel = function(){
                     self.manualLocationVisible(false);
                     self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
                     neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
+                    $("#modal").toggleClass("modalDisplay");
                 }
         ]);
     }

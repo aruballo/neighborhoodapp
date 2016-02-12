@@ -9,11 +9,17 @@
 	#resultsTableDiv {
     	overflow: auto;
     	height: 75px;
-    	padding: 0 10px 0; 
+    	padding: 0 10px 0;
 	}
 }
 
 @media screen and (max-width: 700px){
+
+	@media screen and (max-height: 650px){
+		#resultsListDiv{
+			display: none;
+		}
+	}
 
 	#filtersDiv {
 		left: 0px;

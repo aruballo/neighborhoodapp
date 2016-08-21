@@ -393,5 +393,7 @@ neighborhoodApp.mapView = {
     }
 };
 
-neighborhoodApp.currentViewModel = new neighborhoodApp.viewModel();
-neighborhoodApp.currentViewModel.init();
+neighborhoodApp.googleMapsCallback = function(){
+    neighborhoodApp.currentViewModel = new neighborhoodApp.viewModel();
+    neighborhoodApp.currentViewModel.init();
+}

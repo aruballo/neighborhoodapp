@@ -1,47 +1,48 @@
 <!doctype html>
 <html lang="en">
     <head>
-       <meta charset="utf-8">
-       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <link rel="stylesheet" href="css/base.css">
-       <link href='https://fonts.googleapis.com/css?family=Raleway:600' rel='stylesheet' type='text/css'>
-       <link rel="stylesheet" href="css/responsive.css">
+        <title> Neighborhood Map </title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/base.css">
+        <link href='https://fonts.googleapis.com/css?family=Raleway:600' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/responsive.css">
     </head>
     <body>
         <div id="modal" class="modal"></div>
         <div id="wrapper">
             <div id="filtersDiv" class="transparency">
                 <div id="locationDiv" class="inline-block">
-                    <label for="locationButtons"> Select a location </label>
+                    <label> Select a location </label>
                     <div id="locationButtons">
                         <button type="button" class="orangeButton" id="manualLocation" data-bind="click: locationOption.bind($data, 'manual')">Enter a Location</button>
                         <button type="button" class="orangeButton" id="detectLocation" data-bind="click: locationOption.bind($data, 'detect')">Detect Location</button>
                     </div>
                 </div>
                 <div id="radioBtns" class="inline-block">
-                    <label for="searchModes"> Select a search mode</label>
+                    <label> Select a search mode</label>
                     <div id="searchModes">
-                        <input id="dropdownsRadio"type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView"></input>
-                        <label class="searchView" for="dropdownsRadio">Dropdowns</label>
+                        <input id="dropdownsRadio" type="radio" name="searchView" value="dropdowns" data-bind="checked: inputView, click: toggleInputView">
+                        <label class="searchView">Dropdowns</label>
                         <br>
-                        <input id="searchbarRadio" type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView"></input>
-                        <label class="searchView" for="searchbarRadio">Search Bar</label>
+                        <input id="searchbarRadio" type="radio" name="searchView" value="searchbar" data-bind="checked: inputView, click: toggleInputView">
+                        <label class="searchView">Search Bar</label>
                     </div>
                 </div>
                 <div id="dropdowns" data-bind="visible: dropdownsVisible">
                     <div class="dropdownDiv">
-                        <label for="CategoryFilterList">Categories</label>
+                        <label>Categories</label>
                         <br>
                         <select id="CategoryFilterList" data-bind="options: categories, optionsText: 'title', value: selectedCategory"></select>
                     </div>
                     <div class="dropdownDiv">
-                        <label for="SubategoryFilterList">Subcategory</label>
+                        <label>Subcategory</label>
                         <br>
                         <select id="SubcategoryFilterList" data-bind="options: subCategories, optionsText: 'title', value: selectedSubcategory"></select>
                     </div>
                     <div class="dropdownDiv">
-                        <label for="RadiusFilterList">Distance (Miles)</label>
+                        <label>Distance (Miles)</label>
                         <select id="RadiusFilterList" data-bind="options: radiusList, optionsText: 'Miles', optionsValue: 'Km', value: selectedRadius"></select>
                     </div>
                     <div class="dropdownDiv">
@@ -50,9 +51,9 @@
                 </div>
                 <div id="searchBar" data-bind="visible: searchbarVisible">
                     <div class="searchDiv">
-                        <label for="searchInput">Enter keyword(s)</label>
+                        <label>Enter keyword(s)</label>
                         <br>
-                        <input id="searchInput" data-bind="value: searchValue"></input>
+                        <input id="searchInput" data-bind="value: searchValue">
                     </div>
                     <div class="searchDiv">
                         <button type="button" class="orangeButton" data-bind="click: loadYelpData">Search</button>
@@ -60,16 +61,14 @@
                 </div>
             </div>
             <div id="filtersVisibilityTrigger" class="transparency" data-bind="click: hideFilters">
-                <img id="minArrow" src="images/min-arrow.png"></img>
-                <img id="minArrow2" src="images/min-arrow2.png"></img>
+                <img id="minArrow" alt="Arrow image indicating minimization" src="images/min-arrow.png">
+                <img id="minArrow2" alt="Arrow image indicating minimization" src="images/min-arrow2.png">
             </div>
             <div id="resultsListDiv" class="transparency">
                 <h3 id="resultsHeader"> Results </h3>
                 <div id="resultsTableDiv">
                     <table id="resultsTable" data-bind="with: neighborhoodApp.currentViewModel">
                         <thead>
-                            <tr>
-                            </tr>
                         </thead>
                         <tbody data-bind="foreach: resultsList">
                             <tr>
@@ -85,24 +84,24 @@
                 <div id="map-canvas" style="width: 100%; height: 100%"></div>
             </div>
             <div id="manualLocationDiv" class="transparency" data-bind="visible: manualLocationVisible">
-                <label for="manualLocationInput" class="margin-bottom"> Enter a valid address </label>
-                <input id="manualLocationInput" data-bind="value: manualLocationValue" class="margin-bottom"> </input>
+                <label class="margin-bottom"> Enter a valid address </label>
+                <input id="manualLocationInput" data-bind="value: manualLocationValue" class="margin-bottom">
                 <div id="manualActions">
                     <button type="button" class="orangeButton" id="acceptManualLocation" data-bind="click: loadManualLocation">Accept Location</button>
                     <button type="button" class="orangeButton" id="cancelManualLocation" data-bind="click: loadManualLocation">Cancel</button>
                 </div>
             </div>
         </div>
+        <script src="js/sha1.js"></script>
+        <script src="js/oauth.js"></script>
+        <script src="js/jquery-2.1.js"></script>
+        <script src="js/knockout.js"></script>
+        <script src="js/async.js"></script>
+        <script src="js/auth.js"></script>
+        <script src="js/helpers.js"></script>
+        <script src="js/yelpCategories.js"></script>
+        <script src="js/mapStyle.js"></script>
+        <script src="js/app.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=neighborhoodApp.googleMapsCallback" async defer></script>
     </body>
-    <script src="js/sha1.js"></script>
-    <script src="js/oauth.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script src="js/jquery-2.1.js"></script>
-    <script src="js/knockout.js"></script>
-    <script src="js/async.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/helpers.js"></script>
-    <script src="js/yelpCategories.js"></script>
-    <script src="js/mapStyle.js"></script>
-    <script src="js/app.js"></script>
 </html>

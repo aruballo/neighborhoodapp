@@ -1,9 +1,9 @@
 var neighborhoodApp = neighborhoodApp || {};
 
-neighborhoodApp.model = function(){
+neighborhoodApp.model = function() {
     var self = this;
 
-    this.init = function(){
+    this.init = function() {
         self.fullCategoriesData;
         self.yelpResults;
         self.fullCategoriesData = neighborhoodApp.yelpCategories;
@@ -12,28 +12,27 @@ neighborhoodApp.model = function(){
     };
 
     // Create arrays for categories and subcategories
-    this.loadParentandSubCategories = function(){
+    this.loadParentandSubCategories = function() {
         self.parentCategories = [];
         self.subCategories = [];
 
-        for(var i = 0; i < self.fullCategoriesData.length; i++){
+        for (var i = 0; i < self.fullCategoriesData.length; i++) {
             var currentObject = self.fullCategoriesData[i];
-            if(currentObject.parents[0] === null){
+            if (currentObject.parents[0] === null) {
                 self.parentCategories.push(currentObject);
-            }
-            else{
+            } else {
                 self.subCategories.push(currentObject);
             }
         }
     };
 
     // Filter the subcategory array by the parent parameter
-    this.filterSubCategoriesByParent = function(parent){
+    this.filterSubCategoriesByParent = function(parent) {
         self.filteredSubCategories = [];
 
-        for(var i = 0; i < self.subCategories.length; i++){
+        for (var i = 0; i < self.subCategories.length; i++) {
             var currentObject = self.subCategories[i];
-            if(currentObject.parents[0] === parent){
+            if (currentObject.parents[0] === parent) {
                 self.filteredSubCategories.push(currentObject);
             }
         }
@@ -41,7 +40,7 @@ neighborhoodApp.model = function(){
 
     // Add the needed parameters for a yelp api request to the passed
     // parameters' array
-    this.setOAuthParameters = function(parameters){
+    this.setOAuthParameters = function(parameters) {
         parameters.push(['callback', 'cb']);
         parameters.push(['oauth_consumer_key', neighborhoodApp.auth.consumerKey]);
         parameters.push(['oauth_consumer_secret', neighborhoodApp.auth.consumerSecret]);
@@ -50,25 +49,24 @@ neighborhoodApp.model = function(){
     };
 
     // Makes a Yelp Search API request
-    this.loadYelpSearchResults = function(searchType, searchValue, radius, limit, callback){
+    this.loadYelpSearchResults = function(searchType, searchValue, radius, limit, callback) {
 
         var parameters = [];
 
         // If this request was made from the dropdowns menu, grab the category and subcategory
-        if(searchType == "dropdowns"){
+        if (searchType == "dropdowns") {
             parameters.push(["category_filter", searchValue[0]]);
         }
         // Else just grab the searchbar value
-        else{
+        else {
             parameters.push(["term", searchValue[0]]);
         }
 
-        if(self.locationMarker.position){
+        if (self.locationMarker.position) {
             var position = self.locationMarker.position;
             var lat = position.lat();
             var lng = position.lng();
-        }
-        else{
+        } else {
             var lat = 33.679046;
             var lng = -117.833076;
         }
@@ -79,56 +77,56 @@ neighborhoodApp.model = function(){
         self.setOAuthParameters(parameters);
 
         neighborhoodApp.helpers.yelpAjaxRequest("search", parameters,
-            function(data){
+            function(data) {
                 self.saveYelpSearchResults(data, callback);
             }
         );
     };
 
     // Save Yelp Search API results
-    this.saveYelpSearchResults = function(data, callback){
+    this.saveYelpSearchResults = function(data, callback) {
         self.yelpSearchResults = data;
         callback();
     };
 
     // Make a Yelp Business API request
-    this.loadBusinessReviewForMarker = function(businessID, callback){
+    this.loadBusinessReviewForMarker = function(businessID, callback) {
 
         var parameters = [];
         self.setOAuthParameters(parameters);
 
         neighborhoodApp.helpers.yelpAjaxRequest("business/" + businessID, parameters,
-            function(data){
+            function(data) {
                 callback(data);
             }
         );
     };
 
     // Get LatLng for location marker
-    this.loadLocationCoordinates = function(address, callback){
+    this.loadLocationCoordinates = function(address, callback) {
         var geocoder = geocoder = new google.maps.Geocoder();
         geocoder.geocode({
-            'address' : address
-        },
-        function(results, status){
-            if (status == google.maps.GeocoderStatus.OK) {
-                self.locationMarker = new google.maps.Marker({
-                    map: neighborhoodApp.mapView.map,
-                    position: results[0].geometry.location
-                });
-                self.locationMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-                callback();
-            } else {
-                alert("Geocode was not successful for the following reason: " + status);
-            }
-        })
+                'address': address
+            },
+            function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    self.locationMarker = new google.maps.Marker({
+                        map: neighborhoodApp.mapView.map,
+                        position: results[0].geometry.location
+                    });
+                    self.locationMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    callback();
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            })
     };
 };
 
-neighborhoodApp.viewModel = function(){
+neighborhoodApp.viewModel = function() {
     var self = this;
 
-    this.init = function(){
+    this.init = function() {
 
 
         self.inputView = ko.observable("dropdowns");
@@ -137,7 +135,19 @@ neighborhoodApp.viewModel = function(){
         self.manualLocationVisible = ko.observable(false);
         self.categories = ko.observableArray([]);
         self.subCategories = ko.observableArray([]);
-        self.radiusList = ko.observableArray([{Miles: 5, Km: 8046}, {Miles: 10, Km: 16093}, {Miles: 15, Km: 24140}, {Miles: 20, Km: 32186}])
+        self.radiusList = ko.observableArray([{
+            Miles: 5,
+            Km: 8046
+        }, {
+            Miles: 10,
+            Km: 16093
+        }, {
+            Miles: 15,
+            Km: 24140
+        }, {
+            Miles: 20,
+            Km: 32186
+        }])
         self.selectedRadius = ko.observable('');
         self.selectedCategory = ko.observable('');
         self.selectedSubcategory = ko.observable('');
@@ -146,7 +156,7 @@ neighborhoodApp.viewModel = function(){
         self.resultsList = ko.observableArray([]);
         self.resultsLimit = 10;
         self.selectedCategory.subscribe(
-            function(value){
+            function(value) {
                 self.loadSubCategories(value);
             }
         );
@@ -161,12 +171,11 @@ neighborhoodApp.viewModel = function(){
     };
 
     // Switch between dropdowns or search bar
-    this.toggleInputView = function(){
-        if(self.inputView() == "dropdowns"){
+    this.toggleInputView = function() {
+        if (self.inputView() == "dropdowns") {
             self.dropdownsVisible(true);
             self.searchbarVisible(false);
-        }
-        else{
+        } else {
             self.dropdownsVisible(false);
             self.searchbarVisible(true);
         }
@@ -178,7 +187,7 @@ neighborhoodApp.viewModel = function(){
         return true;
     };
 
-    this.hideFilters = function(){
+    this.hideFilters = function() {
         $("#filtersDiv").toggleClass("hideFilter");
         $("#filtersVisibilityTrigger").toggleClass("hideFilter");
         $("#minArrow").toggleClass("flipArrow");
@@ -186,14 +195,13 @@ neighborhoodApp.viewModel = function(){
     };
 
     //Make yelp request based on search type
-    this.loadYelpData = function(){
+    this.loadYelpData = function() {
         var searchType = self.dropdownsVisible() ? "dropdowns" : "searchbar";
         var searchValues = [];
 
-        if(searchType === "dropdowns"){
+        if (searchType === "dropdowns") {
             searchValues.push(self.selectedSubcategory().alias);
-        }
-        else{
+        } else {
             searchValues.push(self.searchValue());
         }
 
@@ -201,10 +209,10 @@ neighborhoodApp.viewModel = function(){
         // the viewModel attempts to display said results
         // on the map and list
         async.series([
-            function(callback){
+            function(callback) {
                 self.model.loadYelpSearchResults(searchType, searchValues, self.selectedRadius(), self.resultsLimit, callback);
             },
-            function(callback){
+            function(callback) {
                 self.loadMarkers();
                 self.populateResultsList();
                 callback();
@@ -212,32 +220,32 @@ neighborhoodApp.viewModel = function(){
         ]);
     };
 
-    this.loadCategories = function(){
+    this.loadCategories = function() {
         self.categories(self.model.parentCategories);
     };
 
-    this.loadSubCategories = function(categoryObject){
+    this.loadSubCategories = function(categoryObject) {
         self.model.filterSubCategoriesByParent(categoryObject.alias);
         self.subCategories(self.model.filteredSubCategories);
     };
 
-    this.populateResultsList = function(){
+    this.populateResultsList = function() {
         self.resultsList.removeAll();
-        for(var i = 0; i < self.model.yelpSearchResults.businesses.length; i++){
+        for (var i = 0; i < self.model.yelpSearchResults.businesses.length; i++) {
             self.resultsList.push(self.model.yelpSearchResults.businesses[i]);
         }
     };
 
-    this.resultsListClick = function(index){
+    this.resultsListClick = function(index) {
         google.maps.event.trigger(self.markersArray[index], 'click');
     };
     //  Populate map with markers based on search results retrieved
     //  and attach click event listeners to each marker to trigger
     //  a yelp business API ajax request
-    this.loadMarkers = function(){
+    this.loadMarkers = function() {
         self.clearMarkers();
         self.markersArray = [];
-        for(var i = 0; i < self.model.yelpSearchResults.businesses.length; i++){
+        for (var i = 0; i < self.model.yelpSearchResults.businesses.length; i++) {
             var currentResult = self.model.yelpSearchResults.businesses[i];
             var lat = currentResult.location.coordinate.latitude;
             var lng = currentResult.location.coordinate.longitude;
@@ -249,38 +257,36 @@ neighborhoodApp.viewModel = function(){
                 title: title
             });
             google.maps.event.addListener(marker, 'click',
-            (function(marker, id){
-                return function(){
-                    self.model.loadBusinessReviewForMarker(id,
-                        function(data){
-                            self.createContentWindow(marker, data);
-                        }
-                    );
-                };
-            }(marker, id)));
+                (function(marker, id) {
+                    return function() {
+                        self.model.loadBusinessReviewForMarker(id,
+                            function(data) {
+                                self.createContentWindow(marker, data);
+                            }
+                        );
+                    };
+                }(marker, id)));
             self.markersArray.push(marker);
             marker.setMap(neighborhoodApp.mapView.map);
         }
     };
 
-    this.locationOption = function(type){
-        if (type === "manual"){
+    this.locationOption = function(type) {
+        if (type === "manual") {
             self.manualLocationVisible(true);
             $("#modal").toggleClass("modalDisplay");
-        }
-        else if(type === "detect"){
+        } else if (type === "detect") {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    function(position){
+                    function(position) {
                         var latitude;
                         var longitude;
-                        if(position){
+                        if (position) {
                             latitude = position.coords.latitude;
                             longitude = position.coords.longitude;
-                        }
-                        else{
-                           latitude = 33.679046;
-                           longitude = -117.833076;
+                        } else {
+                            latitude = 33.679046;
+                            longitude = -117.833076;
                         }
 
                         self.model.locationMarker.setMap(null);
@@ -294,10 +300,9 @@ neighborhoodApp.viewModel = function(){
                         self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
                         neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
                     },
-                    function(){
+                    function() {
                         alert("Unable to retrieve location");
-                    },
-                    {
+                    }, {
                         timeout: 3000
                     }
                 );
@@ -305,34 +310,33 @@ neighborhoodApp.viewModel = function(){
         }
     }
 
-    this.loadManualLocation = function(){
-        if(arguments[1].target.id == "cancelManualLocation"){
+    this.loadManualLocation = function() {
+        if (arguments[1].target.id == "cancelManualLocation") {
             self.manualLocationVisible(false);
             $("#modal").toggleClass("modalDisplay");
             return;
         }
         async.series([
-                function(callback){
-                    self.model.loadLocationCoordinates(self.manualLocationValue(), callback);
-                    if(self.model.locationMarker.setMap){
-                        self.model.locationMarker.setMap(null);
-                    }
-                },
-                function(callback){
-                    self.manualLocationVisible(false);
-                    self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
-                    neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
-                    $("#modal").toggleClass("modalDisplay");
+            function(callback) {
+                self.model.loadLocationCoordinates(self.manualLocationValue(), callback);
+                if (self.model.locationMarker.setMap) {
+                    self.model.locationMarker.setMap(null);
                 }
+            },
+            function(callback) {
+                self.manualLocationVisible(false);
+                self.model.locationMarker.setMap(neighborhoodApp.mapView.map);
+                neighborhoodApp.mapView.map.setCenter(self.model.locationMarker.position);
+                $("#modal").toggleClass("modalDisplay");
+            }
         ]);
     }
 
-    this.clearMarkers = function(){
-        if(!self.markersArray){
+    this.clearMarkers = function() {
+        if (!self.markersArray) {
             return;
-        }
-        else{
-            for(var i = 0; i < self.markersArray.length; i++){
+        } else {
+            for (var i = 0; i < self.markersArray.length; i++) {
                 self.markersArray[i].setMap(null);
             }
 
@@ -342,24 +346,24 @@ neighborhoodApp.viewModel = function(){
 
     //Template for content windows that come up when a
     //marker is clicked.
-    this.createContentWindow = function(marker, data){
-        var contentString = '<div id="infoWindow">'+
-            '<div id="infoWindowImageDiv">'+
+    this.createContentWindow = function(marker, data) {
+        var contentString = '<div id="infoWindow">' +
+            '<div id="infoWindowImageDiv">' +
             '<img src="' + data.image_url + '"></img>' +
-            '</div>'+
+            '</div>' +
             '<div id="infoWindowLocationTitle">' +
-            '<h1 id="infoWindowHeading">' + data.name + '</h1>'+
+            '<h1 id="infoWindowHeading">' + data.name + '</h1>' +
             '<img id="infoWindowRatingImage" src="' + data.rating_img_url + '"></img>' +
             '<p id="infowWindowReviewCount">(' + data.review_count + ' reviews) </p>' +
             '</div>' +
-            '<div id="infoWindowContent">'+
+            '<div id="infoWindowContent">' +
             '<img id="infoWindowReviewerImage" src="' + data.snippet_image_url + '"></img>' +
             '<h3>' + data.reviews[0].user.name + '</h3>' +
             '<img src="' + data.reviews[0].rating_image_small_url + '"> </img>' +
             '<p>' + data.snippet_text +
             '</p>' +
             '<a href="' + data.url + '" target="_blank"> Read more >>> </a>' +
-            '</div>'+
+            '</div>' +
 
             '</div>';
 
@@ -370,13 +374,13 @@ neighborhoodApp.viewModel = function(){
 };
 
 neighborhoodApp.mapView = {
-    init: function(){
+    init: function() {
         var self = this;
         self.showMap();
     },
 
     //If null is passed it simply defaults to my home coordinates
-    showMap: function(position){
+    showMap: function(position) {
         var latitude = 33.679046;
         var longitude = -117.833076;
         var styledMap = new google.maps.StyledMapType(neighborhoodApp.mapStyle, {
@@ -384,7 +388,10 @@ neighborhoodApp.mapView = {
         });
 
         neighborhoodApp.mapView.mapOptions = {
-            center: { lat: latitude, lng: longitude},
+            center: {
+                lat: latitude,
+                lng: longitude
+            },
             zoom: 12
         };
         neighborhoodApp.mapView.map = new google.maps.Map(document.getElementById('map-canvas'), neighborhoodApp.mapView.mapOptions);
@@ -393,7 +400,7 @@ neighborhoodApp.mapView = {
     }
 };
 
-neighborhoodApp.googleMapsCallback = function(){
+neighborhoodApp.googleMapsCallback = function() {
     neighborhoodApp.currentViewModel = new neighborhoodApp.viewModel();
     neighborhoodApp.currentViewModel.init();
 }

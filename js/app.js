@@ -169,6 +169,7 @@ neighborhoodApp.viewModel = function() {
         self.model.init();
         self.loadCategories();
         ko.applyBindings(self);
+        self.loadYelpData();
     };
 
     // Switch between dropdowns or search bar

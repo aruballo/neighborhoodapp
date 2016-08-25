@@ -12,7 +12,7 @@
     <body>
         <div id="modal" class="modal"></div>
         <div id="wrapper">
-            <div id="filtersDiv" class="transparency">
+            <div id="filtersDiv" class="transparency" data-bind="css: { hideFilter: toggleFiltersVisible() == true }">
                 <div id="locationDiv" class="inline-block">
                     <label> Select a location </label>
                     <div id="locationButtons">
@@ -60,9 +60,9 @@
                     </div>
                 </div>
             </div>
-            <div id="filtersVisibilityTrigger" class="transparency" data-bind="click: hideFilters">
-                <img id="minArrow" alt="Arrow image indicating minimization" src="images/min-arrow.png">
-                <img id="minArrow2" alt="Arrow image indicating minimization" src="images/min-arrow2.png">
+            <div id="filtersVisibilityTrigger" class="transparency" data-bind="click: toggleFilters, css: { hideFilter: toggleFiltersVisible() == true }">
+                <img id="minArrow" alt="Arrow image indicating minimization" src="images/min-arrow.png" data-bind="css: { flipArrow: toggleFiltersVisible() == false }">
+                <img id="minArrow2" alt="Arrow image indicating minimization" src="images/min-arrow2.png" data-bind="css: { flipArrow: toggleFiltersVisible() == false }">
             </div>
             <div id="resultsListDiv" class="transparency">
                 <h3 id="resultsHeader"> Results </h3>

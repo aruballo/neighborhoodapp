@@ -135,6 +135,7 @@ neighborhoodApp.viewModel = function() {
         self.manualLocationVisible = ko.observable(false);
         self.categories = ko.observableArray([]);
         self.subCategories = ko.observableArray([]);
+        self.toggleFiltersVisible = ko.observable(false);
         self.radiusList = ko.observableArray([{
             Miles: 5,
             Km: 8046
@@ -147,7 +148,7 @@ neighborhoodApp.viewModel = function() {
         }, {
             Miles: 20,
             Km: 32186
-        }])
+        }]);
         self.selectedRadius = ko.observable('');
         self.selectedCategory = ko.observable('');
         self.selectedSubcategory = ko.observable('');
@@ -187,11 +188,13 @@ neighborhoodApp.viewModel = function() {
         return true;
     };
 
-    this.hideFilters = function() {
-        $("#filtersDiv").toggleClass("hideFilter");
-        $("#filtersVisibilityTrigger").toggleClass("hideFilter");
-        $("#minArrow").toggleClass("flipArrow");
-        $("#minArrow2").toggleClass("flipArrow");
+    this.toggleFilters = function() {
+        if (self.toggleFiltersVisible() == false){
+            self.toggleFiltersVisible(true);
+        }
+        else{
+            self.toggleFiltersVisible(false);
+        }
     };
 
     //Make yelp request based on search type
@@ -347,29 +350,50 @@ neighborhoodApp.viewModel = function() {
     //Template for content windows that come up when a
     //marker is clicked.
     this.createContentWindow = function(marker, data) {
-        var contentString = '<div id="infoWindow">' +
-            '<div id="infoWindowImageDiv">' +
-            '<img src="' + data.image_url + '"></img>' +
-            '</div>' +
-            '<div id="infoWindowLocationTitle">' +
-            '<h1 id="infoWindowHeading">' + data.name + '</h1>' +
-            '<img id="infoWindowRatingImage" src="' + data.rating_img_url + '"></img>' +
-            '<p id="infowWindowReviewCount">(' + data.review_count + ' reviews) </p>' +
-            '</div>' +
-            '<div id="infoWindowContent">' +
-            '<img id="infoWindowReviewerImage" src="' + data.snippet_image_url + '"></img>' +
-            '<h3>' + data.reviews[0].user.name + '</h3>' +
-            '<img src="' + data.reviews[0].rating_image_small_url + '"> </img>' +
-            '<p>' + data.snippet_text +
-            '</p>' +
-            '<a href="' + data.url + '" target="_blank"> Read more >>> </a>' +
-            '</div>' +
+        if(data){
+            var imageurl = data.image_url ? data.image_url  : "images/placeholder.png";
 
-            '</div>';
+            var contentString = '<div id="infoWindow">' +
+                '<div id="infoWindowImageDiv">' +
+                '<img src="' + imageurl+ '"></img>' +
+                '</div>' +
+                '<div id="infoWindowLocationTitle">' +
+                '<h1 id="infoWindowHeading">' + data.name + '</h1>' +
+                '<img id="infoWindowRatingImage" src="' + data.rating_img_url + '"></img>' +
+                '<p id="infowWindowReviewCount">(' + data.review_count + ' reviews) </p>' +
+                '</div>' +
+                '<div id="infoWindowContent">' +
+                '<img id="infoWindowReviewerImage" src="' + data.snippet_image_url + '"></img>' +
+                '<h3>' + data.reviews[0].user.name + '</h3>' +
+                '<img src="' + data.reviews[0].rating_image_small_url + '"> </img>' +
+                '<p>' + data.snippet_text +
+                '</p>' +
+                '<a href="' + data.url + '" target="_blank"> Read more >>> </a>' +
+                '</div>' +
 
+                '</div>';
+        }
+        else{
+            var contentString = '<div id="infoWindow">' +
+                '<div id="infoWindowImageDiv">' +
+                '<img src="images/placehold.png"></img>' +
+                '</div>' +
+                '<div id="infoWindowLocationTitle">' +
+                '<h1 id="infoWindowHeading">Not Available</h1>' +
+                '<img id="infoWindowRatingImage" src=""></img>' +
+                '<p id="infowWindowReviewCount">( 0 reviews) </p>' +
+                '</div>' +
+                '<div id="infoWindowContent">' +
+                '<img id="infoWindowReviewerImage" src=""></img>' +
+                '<h3>No data returned</h3>' +
+                '<img src=""> </img>' +
+                '</div>' +
+                '</div>';
+        }
 
         self.infoWindow.setContent(contentString);
         self.infoWindow.open(neighborhoodApp.mapView.map, marker);
+        neighborhoodApp.mapView.map.setCenter(marker.position);
     };
 };
 

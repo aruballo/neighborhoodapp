@@ -43,7 +43,7 @@ neighborhoodApp.helpers = {
                 'success': function(data) {
                     callback(data);
                 },
-                'error': errorCallback
+                'error': this.errorCallback
             });
         } else if (dataType == "json") {
             $.ajax({
@@ -52,13 +52,13 @@ neighborhoodApp.helpers = {
                 'success': function(data) {
                     callback(data);
                 },
-                'error': errorCallback
+                'error': this.errorCallback
             });
         }
     },
 
     errorCallback: function(jqXHR, textStatus, errorThrown){
-        alert("Request failed! Error: " errorThrown + "\n Status: " + textStatus)
+        alert("Request failed! Error: " + errorThrown + "\n Status: " + textStatus);
     }
 
 };

@@ -257,11 +257,13 @@ neighborhoodApp.viewModel = function() {
             var resultLatlng = new google.maps.LatLng(lat, lng);
             var marker = new google.maps.Marker({
                 position: resultLatlng,
-                title: title
+                title: title,
+                animation: google.maps.Animation.DROP
             });
             google.maps.event.addListener(marker, 'click',
                 (function(marker, id) {
                     return function() {
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
                         self.model.loadBusinessReviewForMarker(id,
                             function(data) {
                                 self.createContentWindow(marker, data);
@@ -355,7 +357,7 @@ neighborhoodApp.viewModel = function() {
 
             var contentString = '<div id="infoWindow">' +
                 '<div id="infoWindowImageDiv">' +
-                '<img src="' + imageurl+ '"></img>' +
+                '<img class="infoWindowImage" src="' + imageurl+ '"></img>' +
                 '</div>' +
                 '<div id="infoWindowLocationTitle">' +
                 '<h1 id="infoWindowHeading">' + data.name + '</h1>' +
@@ -392,6 +394,13 @@ neighborhoodApp.viewModel = function() {
         }
 
         self.infoWindow.setContent(contentString);
+        google.maps.event.addListener(self.infoWindow,'closeclick', (function(marker){
+            return function(){
+                if(marker.getAnimation() !== null){
+                    marker.setAnimation(null);
+                }
+            }
+        }(marker)));
         self.infoWindow.open(neighborhoodApp.mapView.map, marker);
         neighborhoodApp.mapView.map.setCenter(marker.position);
     };

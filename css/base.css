@@ -226,3 +226,7 @@ select {
     display: none;
 }
 
+.infoWindowImage {
+    height: 100px;
+    width: 100px;
+}

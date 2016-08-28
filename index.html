@@ -65,7 +65,9 @@
                 <img id="minArrow2" alt="Arrow image indicating minimization" src="images/min-arrow2.png" data-bind="css: { flipArrow: toggleFiltersVisible() == false }">
             </div>
             <div id="resultsListDiv" class="transparency">
-                <h3 id="resultsHeader"> Results </h3>
+                <h3 id="filterResultsHeader">Filter Results</h3>
+                <input id="resultsFilter" data-bind="textInput: filterResultsInput">
+                <h3 id="resultsHeader">Results </h3>
                 <div id="resultsTableDiv">
                     <table id="resultsTable" data-bind="with: neighborhoodApp.currentViewModel">
                         <thead>
@@ -102,6 +104,6 @@
         <script src="js/yelpCategories.js"></script>
         <script src="js/mapStyle.js"></script>
         <script src="js/app.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?callback=neighborhoodApp.googleMapsCallback" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=neighborhoodApp.googleMapsCallback" async defer onerror="neighborhoodApp.googleMapsErrorCallback()"></script>
     </body>
 </html>

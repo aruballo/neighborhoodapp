@@ -1,7 +1,7 @@
 @media screen and (max-width: 960px) {
     #resultsListDiv {
-        height: 100px;
-        bottom: 0px;
+        height: 150px;
+        bottom: 0;
         left: auto;
         top: auto;
         width: 100%;
@@ -16,10 +16,10 @@
 
 @media screen and (max-width: 700px) {
     #filtersDiv {
-        left: 0px;
-        top: 0px;
+        left: 0;
+        top: 0;
         width: 100%;
-        padding: 0px;
+        padding: 0;
         height: 110px;
     }
 
@@ -93,7 +93,7 @@
     #filtersVisibilityTrigger {
         height: 365px;
         width: 40px;
-        top: 0px;
+        top: 0;
         left: 170px;
         border-left: solid 2px #FF520E;
         border-top: none;

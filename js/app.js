@@ -1,3 +1,5 @@
+'use strict';
+
 var neighborhoodApp = neighborhoodApp || {};
 
 neighborhoodApp.model = function() {
@@ -13,10 +15,11 @@ neighborhoodApp.model = function() {
 
     // Create arrays for categories and subcategories
     this.loadParentandSubCategories = function() {
+        var categoriesDataLength = self.fullCategoriesData.length
         self.parentCategories = [];
         self.subCategories = [];
 
-        for (var i = 0; i < self.fullCategoriesData.length; i++) {
+        for (var i = 0; i < categoriesDataLength; i++) {
             var currentObject = self.fullCategoriesData[i];
             if (currentObject.parents[0] === null) {
                 self.parentCategories.push(currentObject);
@@ -156,9 +159,15 @@ neighborhoodApp.viewModel = function() {
         self.manualLocationValue = ko.observable('');
         self.resultsList = ko.observableArray([]);
         self.resultsLimit = 10;
+        self.filterResultsInput = ko.observable('');
         self.selectedCategory.subscribe(
             function(value) {
                 self.loadSubCategories(value);
+            }
+        );
+        self.filterResultsInput.subscribe(
+            function(value) {
+                self.filterResults(value);
             }
         );
         self.model = new neighborhoodApp.model();
@@ -405,6 +414,29 @@ neighborhoodApp.viewModel = function() {
         self.infoWindow.open(neighborhoodApp.mapView.map, marker);
         neighborhoodApp.mapView.map.setCenter(marker.position);
     };
+
+    this.filterResults = function(value) {
+        var length = self.resultsList().length;
+        var result = '';
+        for(var i = 0; i < length; i++){
+            result = self.resultsList()[i];
+            if(result.name.toLowerCase().indexOf(value) < 0 && value !== ""){
+                result._destroy = true;
+                self.markersArray[i].setVisible(false);
+            }
+            else{
+                result._destroy = false;
+                self.markersArray[i].setVisible(true);
+            }
+        }
+        self.refreshResultsList();
+    };
+
+    this.refreshResultsList = function(){
+        var data = self.resultsList().slice(0);
+        self.resultsList([]);
+        self.resultsList(data);
+    };
 };
 
 neighborhoodApp.mapView = {
@@ -437,4 +469,8 @@ neighborhoodApp.mapView = {
 neighborhoodApp.googleMapsCallback = function() {
     neighborhoodApp.currentViewModel = new neighborhoodApp.viewModel();
     neighborhoodApp.currentViewModel.init();
+}
+
+neighborhoodApp.googleMapsErrorCallback = function(){
+    alert("An error has occurred while trying to load Google Maps; please check the console for more information");
 }

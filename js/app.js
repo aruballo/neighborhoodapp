@@ -420,7 +420,7 @@ neighborhoodApp.viewModel = function() {
         var result = '';
         for(var i = 0; i < length; i++){
             result = self.resultsList()[i];
-            if(result.name.toLowerCase().indexOf(value) < 0 && value !== ""){
+            if(result.name.toLowerCase().indexOf(value.toLowerCase()) < 0 && value !== ""){
                 result._destroy = true;
                 self.markersArray[i].setVisible(false);
             }

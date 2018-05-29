@@ -10,7 +10,7 @@ neighborhoodApp.helpers = {
     yelpAjaxRequest: function(api, parameters, callback) {
 
         var message = {
-            'action': 'http://api.yelp.com/v2/' + api,
+            'action': 'https://api.yelp.com/v2/' + api,
             'method': 'GET',
             'parameters': parameters
         };
@@ -24,7 +24,6 @@ neighborhoodApp.helpers = {
         OAuth.SignatureMethod.sign(message, accessor);
 
         var data = OAuth.getParameterMap(message.parameters);
-
         this.ajaxRequest(message.action, data, "jsonp", callback);
     },
 
